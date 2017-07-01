@@ -1,13 +1,14 @@
-# SUSEP Webscraper
-###Escrito por Otavio Cals
-###Dezembro/2016
+# SUSEP Webscraper#
+###Escrito por Otavio Cals###
+###Junho/2016###
 
+=========
 
-###Introducao
+###Introducao###
 
-###Utilizacao
+###Utilizacao###
 
-###Programa
+###Programa###
 Escrito em python com interface grafica criada utilizando [Kivy](https://kivy.org/).
 
 1. Scripts Originais
@@ -21,7 +22,7 @@ Escrito em python com interface grafica criada utilizando [Kivy](https://kivy.or
 4. Logos
 	* Logos do [Cals Emporium](https://cals.herokuapp.com).
 
-###Compilacao
+###Compilacao###
 
 Novas veroes podem ser compiladas utilizando o pyinstaller e os specs fornecidos (main_linux.spec para compilar versoes para Linux e main_windows.spec para versoes para Windows).
 A pessoa deve alterar o diretorio destino no campo "pathex" dos specs. Deve-se certificar tambem que as bibliotecas listadas em main.py e webscraper.py estao instaladas.
