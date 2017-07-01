@@ -29,10 +29,11 @@ from kivy.clock import Clock
 from os.path import join, isdir, expanduser, isfile
 from sys import platform
 from kivy.lang import Builder
-from file import XFolder
-import tools
+from libs.file import XFolder
+import libs.tools
 from time import sleep
-from webscraper import Webscraper
+from webscraper.webscraper import Webscraper
+print("hehe")
 import time
 import datetime
 import gc
@@ -84,34 +85,7 @@ phantom_path = resource_path(phantom)
 
 #Setting links to scrap from
 
-links = [
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Aquisi%C3%A7%C3%A3o%20de%20outros%20bens&parametros='tipopessoa:1;modalidade:402;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Aquisi%C3%A7%C3%A3o%20de%20ve%C3%ADculos&parametros='tipopessoa:1;modalidade:401;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Cart%C3%A3o%20de%20cr%C3%A9dito%20parcelado&parametros='tipopessoa:1;modalidade:215;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Cart%C3%A3o%20de%20cr%C3%A9dito%20rotativo&parametros='tipopessoa:1;modalidade:204;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Cheque%20especial&parametros='tipopessoa:1;modalidade:216;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Cr%C3%A9dito%20pessoal%20consignado%20INSS&parametros='tipopessoa:1;modalidade:218;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Cr%C3%A9dito%20pessoal%20consignado%20privado&parametros='tipopessoa:1;modalidade:219;encargo:101'", #
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Cr%C3%A9dito%20pessoal%20consignado%20p%C3%BAblico&parametros='tipopessoa:1;modalidade:220;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Desconto%20de%20cheques&parametros='tipopessoa:1;modalidade:302;encargo:101'", #
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais-ModalidadeMensal.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Financiamento%20imobili%C3%A1rio%20com%20taxas%20reguladas&parametros='tipopessoa:1;modalidade:905;encargo:101'", ##
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais-ModalidadeMensal.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Financiamento%20imobili%C3%A1rio%20com%20taxas%20de%20mercado&parametros='tipopessoa:1;modalidade:903;encargo:101'", ##
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Cr%C3%A9dito%20pessoal%20n%C3%A3o%20consignado&parametros='tipopessoa:1;modalidade:221;encargo:101'", #
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Leasing%20de%20ve%C3%ADculos&parametros='tipopessoa:1;modalidade:1205;encargo:101'", #
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais-ModalidadeMensal.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Financiamento%20imobili%C3%A1rio%20com%20taxas%20reguladas&parametros='tipopessoa:1;modalidade:905;encargo:201'", ##
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais-ModalidadeMensal.rdl&nome=Pessoa%20F%C3%ADsica%20-%20Financiamento%20imobili%C3%A1rio%20com%20taxas%20de%20mercado&parametros='tipopessoa:1;modalidade:903;encargo:201'", ##
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Antecipa%C3%A7%C3%A3o%20de%20faturas%20de%20cart%C3%A3o%20de%20cr%C3%A9dito&parametros='tipopessoa:2;modalidade:303;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Capital%20de%20giro%20com%20prazo%20at%C3%A9%20365%20dias&parametros='tipopessoa:2;modalidade:210;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Capital%20de%20giro%20com%20prazo%20superior%20a%20365%20dias&parametros='tipopessoa:2;modalidade:211;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Cheque%20especial&parametros='tipopessoa:2;modalidade:216;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Conta%20garantida&parametros='tipopessoa:2;modalidade:217;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Desconto%20de%20cheques&parametros='tipopessoa:2;modalidade:302;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Desconto%20de%20duplicata&parametros='tipopessoa:2;modalidade:301;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Vendor&parametros='tipopessoa:2;modalidade:404;encargo:101'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Capital%20de%20giro%20com%20prazo%20at%C3%A9%20365%20dias&parametros='tipopessoa:2;modalidade:210;encargo:204'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Capital%20de%20giro%20com%20prazo%20superior%20a%20365%20dias&parametros='tipopessoa:2;modalidade:211;encargo:204'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Conta%20garantida&parametros='tipopessoa:2;modalidade:217;encargo:204'",
-    "http://www.bcb.gov.br/pt-br/#!/r/txjuros/?path=conteudo%2Ftxcred%2FReports%2FTaxasCredito-Consolidadas-porTaxasAnuais.rdl&nome=Pessoa%20jur%C3%ADdica%20-%20Adiantamento%20sobre%20contratos%20de%20c%C3%A2mbio&parametros='tipopessoa:2;modalidade:502;encargo:205'"]
+links = []
 
 
 #Building GUI
@@ -260,12 +234,12 @@ class AppScreen(GridLayout):
                 time_interval = 43200
             global event
             event = Clock.schedule_once(self.scrap,0.5)
-            global event
+            #global event
             event = Clock.schedule_interval(self.scrap, time_interval)
         if args[1] == "normal":
             self.ids.spinner.disabled = False
             self.ids.folder_button.disabled = False
-            global event
+            #global event
             Clock.unschedule(event)
 
 

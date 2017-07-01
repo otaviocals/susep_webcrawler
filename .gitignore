@@ -1,3 +1,4 @@
 data_tables/
 build/
+dist/
 __pycache__/
