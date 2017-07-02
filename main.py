@@ -33,7 +33,6 @@ from libs.file import XFolder
 import libs.tools
 from time import sleep
 from webscraper.webscraper import Webscraper
-print("hehe")
 import time
 import datetime
 import gc
@@ -61,16 +60,16 @@ current_os = platform
 
 if current_os.startswith("linux"):
     slash = "/"
-    phantom = "phantomjs"
+    phantom = "phantomjs/phantomjs"
 elif current_os.startswith("win32") or current_os.startswith("cygwin"):
     slash = "\\"
-    phantom = "phantomjs.exe"
+    phantom = "phantomjs\\phantomjs.exe"
 elif current_os.startswith("darwin"):
     slash = "/"
-    phantom = "phantomjs"
+    phantom = "phantomjs/phantomjs"
 else:
     slash = "/"
-    phantom = "phantomjs"
+    phantom = "phantomjs/phantomjs"
 
 
 def resource_path(relative_path):
@@ -101,7 +100,7 @@ Builder.load_string('''
             pos_hint: {"center_y": 0.5, "center_x": 0.5}
             id: ce_logo
         Label:
-            text:"Webscraper de Taxa de Juros"
+            text:"Webscraper\\nSeries - SUSEP"
             markup: True
             size_hint: None, None
             size: 300, 200
@@ -172,7 +171,9 @@ class AppScreen(GridLayout):
 #Calling webscraper
 
     def scrap(self,event):
-        log_file = open((sel_folder+slash+"history.log"),"a",encoding="utf-8")
+        log_file = open((sel_folder+slash+"logs"+slash+"history.log"),"a",encoding="utf-8")
+
+    #Starting scrap
 
         print("Starting at "+str(datetime.datetime.now()))
         log_file.write("Starting at "+str(datetime.datetime.now())+"\n")
@@ -184,19 +185,16 @@ class AppScreen(GridLayout):
 
         start_time_seconds = time.time()
         self.ids.start_button.disabled = True
-        for elemen in range(0, len(links)):
-            str_output_logger = []
 
-            #print(links[elemen])
-            #print(sel_folder)
-            #print(log_file)
-            #print(str_output_logger)
-            #print(phantom_path)
+    #Running webscraper
 
-            Webscraper(links[elemen],sel_folder,log_file,str_output_logger,phantom_path)
+        str_output_logger = []
+        Webscraper(sel_folder,log_file,str_output_logger,phantom_path)
+        self.ids.log_output.text += "".join(str_output_logger)
+        gc.collect()
 
-            self.ids.log_output.text += "".join(str_output_logger)
-            gc.collect()
+    #Ending scrap
+
         self.ids.start_button.disabled = False
         end_time_seconds = time.time()
         elapsed_time = str(int(round(end_time_seconds - start_time_seconds)))
@@ -232,7 +230,7 @@ class AppScreen(GridLayout):
                 time_interval = 21600
             elif self.ids.spinner.text == "12 horas":
                 time_interval = 43200
-            global event
+            #global event
             event = Clock.schedule_once(self.scrap,0.5)
             #global event
             event = Clock.schedule_interval(self.scrap, time_interval)
