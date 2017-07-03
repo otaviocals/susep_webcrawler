@@ -31,6 +31,7 @@ from urllib.request import urlretrieve
 from clint.textui import progress
 from progressbar import ProgressBar, Percentage, Bar, ETA, FileTransferSpeed, RotatingMarker
 from glob import glob
+from zipfile import ZipFile
 import requests
 import lxml
 import sys
@@ -123,6 +124,7 @@ def Webscraper(folder, print_output = None, visual_output = None, phantom_path =
                 print_output.write("Data is up to date.\n")
             if not visual_output == None:
                 visual_output.append("Data is up to date.\n")
+            return False
         else:
             with open(folder_logs+slash+"date.log","w") as f:
                 print(last_date,file=f)
@@ -229,6 +231,17 @@ def Webscraper(folder, print_output = None, visual_output = None, phantom_path =
             down_start = datetime.now()
             urlretrieve(data_address, data_path, reporthook = dlProgress)
             print("Download finished!")
+            if not print_output == None:
+                print_output.write("Download finished!\n")
+            if not visual_output == None:
+                visual_output.append("Download finished!\n")
+
+        #Unzipping Data
+
+            with ZipFile(data_path,"r") as zip_ref:
+                zip_ref.extractall(folder_data)
+            remove(data_path)
+            return True
 
 
 

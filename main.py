@@ -28,6 +28,7 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from os.path import join, isdir, expanduser, isfile
 from sys import platform
+import subprocess
 from kivy.lang import Builder
 from libs.file import XFolder
 import libs.tools
@@ -79,8 +80,9 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path,relative_path)
 
-logo_path = resource_path("logo.png")
+logo_path = resource_path("logo"+slash+"logo.png")
 phantom_path = resource_path(phantom)
+r_script_path = resource_path("rscripts"+slash+"hello.R")
 
 #Setting links to scrap from
 
@@ -189,9 +191,15 @@ class AppScreen(GridLayout):
     #Running webscraper
 
         str_output_logger = []
-        Webscraper(sel_folder,log_file,str_output_logger,phantom_path)
+        new_data = Webscraper(sel_folder,log_file,str_output_logger,phantom_path)
         self.ids.log_output.text += "".join(str_output_logger)
         gc.collect()
+        print(new_data)
+
+    #Running R scripts
+
+        r_output = subprocess.check_output(["Rscript",r_script_path],universal_newlines=True)
+        print(r_output)
 
     #Ending scrap
 
@@ -213,6 +221,9 @@ class AppScreen(GridLayout):
 
         log_file.close()
 
+        self.ids.start_button.state = "normal"
+
+
 #GUI functions
 
     def start(self,*args):
@@ -220,27 +231,11 @@ class AppScreen(GridLayout):
         if args[1] == "down":
             self.ids.spinner.disabled = True
             self.ids.folder_button.disabled = True
-            if self.ids.spinner.text == "10 minutos":
-                time_interval = 600
-            elif self.ids.spinner.text == "30 minutos":
-                time_interval = 1800
-            elif self.ids.spinner.text == "1 hora":
-                time_interval = 3600
-            elif self.ids.spinner.text == "6 horas":
-                time_interval = 21600
-            elif self.ids.spinner.text == "12 horas":
-                time_interval = 43200
-            #global event
-            event = Clock.schedule_once(self.scrap,0.5)
-            #global event
-            event = Clock.schedule_interval(self.scrap, time_interval)
+            event = Clock.schedule_once(self.scrap)
         if args[1] == "normal":
             self.ids.spinner.disabled = False
             self.ids.folder_button.disabled = False
-            #global event
             Clock.unschedule(event)
-
-
 
     def update_button(self,event):
         self.ToggleButton.text="Stop"
