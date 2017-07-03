@@ -1,0 +1,102 @@
+<AppScreen>
+    BoxLayout:
+        orientation: "horizontal"
+        Image:
+            source: ""
+            size_hint: None, None
+            size: 150,200
+            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+            id: ce_logo
+        Label:
+            text:"Webscraper\nSeries - SUSEP"
+            markup: True
+            size_hint: None, None
+            size: 300, 200
+            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+    BoxLayout:
+        orientation: "vertical"
+        id: box_2
+        XButton:
+            text: 'Selecione a Pasta'
+            on_release: root._folder_dialog()
+            size_hint: None, None
+            size: 150, 50
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            id: folder_button
+        Label:
+            text: "Pasta selecionada:    " + root.default_folder
+            size: 450, 30
+            size_hint: None, None
+            id: text_input
+    BoxLayout:
+        orientation: "vertical"
+        XButton:
+            text: "Analises Selecionadas"
+            on_release: root._check_dialog()
+            size: 150,50
+            size_hint: None, None
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            id: check_button
+    FloatLayout:
+        ToggleButton:
+            text: "Stop" if self.state == "down" else "Start"
+            size: 150, 50
+            size_hint: None, None
+            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+            group: "start"
+            on_state: root.start(*args)
+            id: start_button
+    BoxLayout:
+        orientation: "vertical"
+        TextInput:
+            text: ""
+            hint_text: "Log Output"
+            multiline: True
+            readonly: True
+            id: log_output
+
+<CheckPopup>
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Analise por Empresas"
+            size_hint: 1,.1
+        GridLayout:
+            cols: 3
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+        Label:
+            text: "Analise por Operacoes"
+            size_hint: 1,.1
+        GridLayout:
+            cols: 3
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+        Label:
+            text: "Analise por Produto"
+            size_hint: 1,.1
+        GridLayout:
+            cols: 3
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+            CheckBox:
+        BoxLayout:
+            orientation:"horizontal"
+            size_hint: 1,.2
+            XButton:
+                text:"OK"
+                #on_release:root._check_callback_ok()
+            XButton:
+                text:"Cancel"
+                #on_release:root._check_callback_cancel()

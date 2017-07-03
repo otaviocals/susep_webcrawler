@@ -31,6 +31,7 @@ from sys import platform
 import subprocess
 from kivy.lang import Builder
 from libs.file import XFolder
+from libs.xpopup import XPopup
 import libs.tools
 from time import sleep
 from webscraper.webscraper import Webscraper
@@ -83,6 +84,7 @@ def resource_path(relative_path):
 logo_path = resource_path("logo"+slash+"logo.png")
 phantom_path = resource_path(phantom)
 r_script_path = resource_path("rscripts"+slash+"hello.R")
+kivi_app_path = resource_path("kivy"+slash+"app_screen.kv")
 
 #Setting links to scrap from
 
@@ -91,70 +93,66 @@ links = []
 
 #Building GUI
 
-Builder.load_string('''
-<AppScreen>
-    BoxLayout:
-        orientation: "horizontal"
-        Image:
-            source: ""
-            size_hint: None, None
-            size: 150,200
-            pos_hint: {"center_y": 0.5, "center_x": 0.5}
-            id: ce_logo
-        Label:
-            text:"Webscraper\\nSeries - SUSEP"
-            markup: True
-            size_hint: None, None
-            size: 300, 200
-            pos_hint: {"center_y": 0.5, "center_x": 0.5}
-    BoxLayout:
-        orientation: "vertical"
-        id: box_2
-        XButton:
-            text: 'Selecione a Pasta'
-            on_release: root._folder_dialog()
-            size_hint: None, None
-            size: 150, 50
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            id: folder_button
-        Label:
-            text: "Pasta selecionada:    " + root.default_folder
-            size: 450, 30
-            size_hint: None, None
-            id: text_input
-    BoxLayout:
-        orientation: "vertical"
-        Label:
-            text:"Frequência de Leitura"
-            markup: True
-            size_hint: None, None
-            size: 450, 100
-        Spinner:
-            text: "10 minutos"
-            values: ("10 minutos","15 minutos","1 hora","6 horas","12 horas")
-            size: 150,50
-            size_hint: None, None
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            id: spinner
-    FloatLayout:
-        ToggleButton:
-            text: "Stop" if self.state == "down" else "Start"
-            size: 150, 50
-            size_hint: None, None
-            pos_hint: {"center_y": 0.5, "center_x": 0.5}
-            group: "start"
-            on_state: root.start(*args)
-            id: start_button
-    BoxLayout
-        orientation: "vertical"
-        TextInput:
-            text: ""
-            hint_text: "Log Output"
-            multiline: True
-            readonly: True
-            id: log_output
+Builder.load_file(kivi_app_path)
 
-''')
+#Builder.load_string('''
+#<AppScreen>
+#    BoxLayout:
+#        orientation: "horizontal"
+#        Image:
+#            source: ""
+#            size_hint: None, None
+#            size: 150,200
+#            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+#            id: ce_logo
+#        Label:
+#            text:"Webscraper\\nSeries - SUSEP"
+#            markup: True
+#            size_hint: None, None
+#            size: 300, 200
+#            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+#    BoxLayout:
+#        orientation: "vertical"
+#        id: box_2
+#        XButton:
+#            text: 'Selecione a Pasta'
+#            on_release: root._folder_dialog()
+#            size_hint: None, None
+#            size: 150, 50
+#            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+#            id: folder_button
+#        Label:
+#            text: "Pasta selecionada:    " + root.default_folder
+#            size: 450, 30
+#            size_hint: None, None
+#            id: text_input
+#    BoxLayout:
+#        orientation: "vertical"
+#        XButton:
+#            text: "Analises Selecionadas"
+#            size: 150,50
+#            size_hint: None, None
+#            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+#            id: check_button
+#    FloatLayout:
+#        ToggleButton:
+#            text: "Stop" if self.state == "down" else "Start"
+#            size: 150, 50
+#            size_hint: None, None
+#            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+#            group: "start"
+#            on_state: root.start(*args)
+#            id: start_button
+#    BoxLayout:
+#        orientation: "vertical"
+#        TextInput:
+#            text: ""
+#            hint_text: "Log Output"
+#            multiline: True
+#            readonly: True
+#            id: log_output
+#
+#''')
 
 
 
@@ -229,11 +227,11 @@ class AppScreen(GridLayout):
     def start(self,*args):
         global event
         if args[1] == "down":
-            self.ids.spinner.disabled = True
+            self.ids.check_button.disabled = True
             self.ids.folder_button.disabled = True
             event = Clock.schedule_once(self.scrap)
         if args[1] == "normal":
-            self.ids.spinner.disabled = False
+            self.ids.check_button.disabled = False
             self.ids.folder_button.disabled = False
             Clock.unschedule(event)
 
@@ -254,6 +252,16 @@ class AppScreen(GridLayout):
     def _folder_dialog(self):
         XFolder(on_dismiss=self._filepopup_callback, path=expanduser(u'~'))
 
+    def _check_callback_ok(self):
+        print("hehe")
+
+    def _check_callback_cancel(self):
+        print("hehe")
+
+    def _check_dialog(self):
+        popup = CheckPopup()
+        popup.open()
+
 #Setting window layout
 
     def __init__(self,**kwargs):
@@ -270,6 +278,9 @@ class AppScreen(GridLayout):
         self.icon = logo_path
         self.ids.ce_logo.source = logo_path
 
+
+class CheckPopup(XPopup):
+    pass
 
 ######################
 #    Starting App    #
