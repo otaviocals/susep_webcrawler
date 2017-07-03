@@ -55,42 +55,565 @@
             readonly: True
             id: log_output
 
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+
 <CheckPopup>
     BoxLayout:
         orientation: "vertical"
+        padding:0,10
+        spacing:10
         Label:
             text: "Analise por Empresas"
             size_hint: 1,.1
-        GridLayout:
-            cols: 3
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
+        ScrollView:
+            canvas.before:
+                Color:
+                    rgba:0.1,0.1,0.1,1
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+            size_hint: 1,.7
+            do_scroll_x: False
+            effect_cls:ScrollEffect
+            GridLayout:
+                cols:1
+                size_hint:1,None
+                padding:0,10
+                spacing:20
+                id:scroll_grid_1
+                minimum_height:self.height
+                top: self.height
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,None
+                    top:self.height
+                    minimum_height:10
+                    height:self.minimum_height
+                    canvas.before:
+                        Color:
+                            rgba:0.5,0.5,0.5,1
+                        Rectangle:
+                            pos:self.pos
+                            size:self.size
+                    CheckBox:
+                        size_hint: .2,.17
+                        id:check_box_1
+                    Label:
+                        text:"Capitalizacao: Contas Patrimoniais"
+                        size_hint: .8,.17
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,.17
+                    Label:
+                        text:"Capitalizacao: Demonstracoes Contabeis"
+                        size_hint: .8,.17
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Capitalizacao: Provisao Total"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"EAPP: Contas Patrimoniais"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"EAPP: Demonstracoes Contabeis"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"EAPP: Provisao Total"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Resseguradoras Locais: Demonstracoes Contabeis"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Resseguradoras Locais: Limite de Retencao"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Resseguradoras Locais: Provisoes"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Contas Patrimoniais"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Demonstracao do Resultado do Exercicio Consolidada"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Demonstracoes Contabeis"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Limite de Retencao"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Provisao das Operacoes de Previdencia"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Provisao por Ramo"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Provisao Total"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Seguradoras: Provisoes Detalhadas"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Administradores"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Ativos Totais"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Ativos Vinculados"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Contatos"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Dependencias"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Grupos Economicos"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Participacoes Acionarias"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Todo o Mercado: Patrimonio Liquido Ajustado"
+                        size_hint: .8,1
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
         Label:
             text: "Analise por Operacoes"
             size_hint: 1,.1
-        GridLayout:
-            cols: 3
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
+        ScrollView:
+            canvas.before:
+                Color:
+                    rgba:0.1,0.1,0.1,1
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+            size_hint: 1,.7
+            do_scroll_x: False
+            effect_cls:ScrollEffect
+            GridLayout:
+                cols:1
+                size_hint:1,None
+                padding:0,10,0,10
+                spacing:20
+                id:scroll_grid_2
+                minimum_height:self.height
+                top: self.height
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 2"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 3"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box Last"
+                        size_hint: .8,1
         Label:
             text: "Analise por Produto"
             size_hint: 1,.1
-        GridLayout:
-            cols: 3
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
-            CheckBox:
+        ScrollView:
+            canvas.before:
+                Color:
+                    rgba:0.1,0.1,0.1,1
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+            size_hint: 1,.7
+            do_scroll_x: False
+            effect_cls:ScrollEffect
+            GridLayout:
+                cols:1
+                size_hint:1,None
+                padding:0,10,0,10
+                spacing:20
+                id:scroll_grid_3
+                minimum_height:self.height
+                top: self.height
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 2"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 3"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box 1"
+                        size_hint: .8,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,1
+                    Label:
+                        text:"Box Last"
+                        size_hint: .8,1
         BoxLayout:
             orientation:"horizontal"
             size_hint: 1,.2

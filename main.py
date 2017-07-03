@@ -22,9 +22,12 @@ from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.scrollview import ScrollView
+from kivy.effects.scroll import ScrollEffect
 from kivy.core.window import Window
 from kivy.config import Config
 from kivy.core.window import Window
+from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 from os.path import join, isdir, expanduser, isfile
 from sys import platform
@@ -260,6 +263,9 @@ class AppScreen(GridLayout):
 
     def _check_dialog(self):
         popup = CheckPopup()
+        popup.ids.scroll_grid_1.bind(minimum_height=popup.ids.scroll_grid_1.setter("height"))
+        popup.ids.scroll_grid_2.bind(minimum_height=popup.ids.scroll_grid_2.setter("height"))
+        popup.ids.scroll_grid_3.bind(minimum_height=popup.ids.scroll_grid_3.setter("height"))
         popup.open()
 
 #Setting window layout
