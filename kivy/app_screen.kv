@@ -78,7 +78,7 @@
             GridLayout:
                 cols:1
                 size_hint:1,None
-                padding:0,10
+                padding:0,5
                 spacing:20
                 id:scroll_grid_1
                 minimum_height:self.height
@@ -87,311 +87,480 @@
                     orientation: "horizontal"
                     size_hint:1,None
                     top:self.height
-                    minimum_height:10
                     height:self.minimum_height
-                    canvas.before:
-                        Color:
-                            rgba:0.5,0.5,0.5,1
-                        Rectangle:
-                            pos:self.pos
-                            size:self.size
+                    padding:0,-18,0,-18
                     CheckBox:
-                        size_hint: .2,.17
-                        id:check_box_1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(0,self.active)
+                        id:check_0
                     Label:
                         text:"Capitalizacao: Contas Patrimoniais"
-                        size_hint: .8,.17
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
-                    size_hint:1,2
+                    size_hint:1,None
                     top:self.height
+                    height:self.minimum_height
                     CheckBox:
-                        size_hint: .2,.17
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(1,self.active)
+                        id:check_1
                     Label:
                         text:"Capitalizacao: Demonstracoes Contabeis"
-                        size_hint: .8,.17
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(2,self.active)
+                        id:check_2
                     Label:
                         text:"Capitalizacao: Provisao Total"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(3,self.active)
+                        id:check_3
                     Label:
                         text:"EAPP: Contas Patrimoniais"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(4,self.active)
+                        id:check_4
                     Label:
                         text:"EAPP: Demonstracoes Contabeis"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(5,self.active)
+                        id:check_5
                     Label:
                         text:"EAPP: Provisao Total"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(6,self.active)
+                        id:check_6
                     Label:
                         text:"Resseguradoras Locais: Demonstracoes Contabeis"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(7,self.active)
+                        id:check_7
                     Label:
                         text:"Resseguradoras Locais: Limite de Retencao"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(8,self.active)
+                        id:check_8
                     Label:
                         text:"Resseguradoras Locais: Provisoes"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(9,self.active)
+                        id:check_9
                     Label:
                         text:"Seguradoras: Contas Patrimoniais"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(10,self.active)
+                        id:check_10
                     Label:
                         text:"Seguradoras: Demonstracao do Resultado do Exercicio Consolidada"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(11,self.active)
+                        id:check_11
                     Label:
                         text:"Seguradoras: Demonstracoes Contabeis"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(12,self.active)
+                        id:check_12
                     Label:
                         text:"Seguradoras: Limite de Retencao"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(13,self.active)
+                        id:check_13
                     Label:
                         text:"Seguradoras: Provisao das Operacoes de Previdencia"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(14,self.active)
+                        id:check_14
                     Label:
                         text:"Seguradoras: Provisao por Ramo"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(15,self.active)
+                        id:check_15
                     Label:
                         text:"Seguradoras: Provisao Total"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(16,self.active)
+                        id:check_16
                     Label:
                         text:"Seguradoras: Provisoes Detalhadas"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(17,self.active)
+                        id:check_17
                     Label:
                         text:"Todo o Mercado: Administradores"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(18,self.active)
+                        id:check_18
                     Label:
                         text:"Todo o Mercado: Ativos Totais"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(19,self.active)
+                        id:check_19
                     Label:
                         text:"Todo o Mercado: Ativos Vinculados"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(20,self.active)
+                        id:check_20
                     Label:
                         text:"Todo o Mercado: Contatos"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(21,self.active)
+                        id:check_21
                     Label:
                         text:"Todo o Mercado: Dependencias"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(22,self.active)
+                        id:check_22
                     Label:
                         text:"Todo o Mercado: Grupos Economicos"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(23,self.active)
+                        id:check_23
                     Label:
                         text:"Todo o Mercado: Participacoes Acionarias"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(24,self.active)
+                        id:check_24
                     Label:
                         text:"Todo o Mercado: Patrimonio Liquido Ajustado"
-                        size_hint: .8,1
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
                         halign:"left"
                         texture_size: self.size
                         text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
         Label:
             text: "Analise por Operacoes"
             size_hint: 1,.1
@@ -408,101 +577,337 @@
             GridLayout:
                 cols:1
                 size_hint:1,None
-                padding:0,10,0,10
+                padding:0,5
                 spacing:20
                 id:scroll_grid_2
                 minimum_height:self.height
                 top: self.height
                 BoxLayout:
                     orientation: "horizontal"
-                    size_hint:1,2
+                    size_hint:1,None
                     top:self.height
+                    height:self.minimum_height
+                    padding:0,-18,0,-18
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(25,self.active)
+                        id:check_25
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Capitalizacao: Dados por UF"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,None
+                    top:self.height
+                    height:self.minimum_height
+                    CheckBox:
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(26,self.active)
+                        id:check_26
+                    Label:
+                        text:"Capitalizacao: Premios (UF)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(27,self.active)
+                        id:check_27
                     Label:
-                        text:"Box 2"
-                        size_hint: .8,1
+                        text:"Capitalizacao: Premios (UF todas)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(28,self.active)
+                        id:check_28
                     Label:
-                        text:"Box 3"
-                        size_hint: .8,1
+                        text:"Capitalizacao: Quantidade de Titulos"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(29,self.active)
+                        id:check_29
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Previdencia em EAPP: Contribuicoes (UF)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(30,self.active)
+                        id:check_30
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Previdencia em EAPP: Contribuicoes (UF todas)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(31,self.active)
+                        id:check_31
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Previdencia em EAPP: Dados por UF"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(32,self.active)
+                        id:check_32
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Previdencia em Seguradoras: Contribuicoes (UF)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(33,self.active)
+                        id:check_33
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Previdencia em Seguradoras: Contribuicoes (UF todas)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(34,self.active)
+                        id:check_34
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Previdencia em Seguradoras: Dados por UF"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(35,self.active)
+                        id:check_35
                     Label:
-                        text:"Box Last"
-                        size_hint: .8,1
+                        text:"Previdencia: Portabilidades Externas"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(36,self.active)
+                        id:check_36
+                    Label:
+                        text:"Previdencia: Quantidades de Participantes"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(37,self.active)
+                        id:check_37
+                    Label:
+                        text:"Resseguros: Premios Ganhos"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(38,self.active)
+                        id:check_38
+                    Label:
+                        text:"Resseguros: Sinistros Retidos"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(39,self.active)
+                        id:check_39
+                    Label:
+                        text:"Seguros: Premios e Sinistros"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(40,self.active)
+                        id:check_40
+                    Label:
+                        text:"Seguros: Premios e Sinistros (UF)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint:1,2
+                    top:self.height
+                    CheckBox:
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(41,self.active)
+                        id:check_41
+                    Label:
+                        text:"Seguros: Premios e Sinistros (UF todas)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
         Label:
             text: "Analise por Produto"
             size_hint: 1,.1
@@ -519,7 +924,7 @@
             GridLayout:
                 cols:1
                 size_hint:1,None
-                padding:0,10,0,10
+                padding:0,5
                 spacing:20
                 id:scroll_grid_3
                 minimum_height:self.height
@@ -529,97 +934,159 @@
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(42,self.active)
+                        id:check_42
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"PGBL: Contribuicoes (UF)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(43,self.active)
+                        id:check_43
                     Label:
-                        text:"Box 2"
-                        size_hint: .8,1
+                        text:"PGBL: Contribuicoes (UF todas)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(44,self.active)
+                        id:check_44
                     Label:
-                        text:"Box 3"
-                        size_hint: .8,1
+                        text:"PGBL: Dados por UF"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(45,self.active)
+                        id:check_45
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"PGBL: Provisao Matematica de Beneficios a Conceder (Fundos)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(46,self.active)
+                        id:check_46
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"PGBL: Resgates"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(47,self.active)
+                        id:check_47
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"Previdencia Tradicional: Resgates"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(48,self.active)
+                        id:check_48
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
+                        text:"VGBL: Provisao Matematica de Beneficios a Conceder (Fundos)"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint:1,2
                     top:self.height
                     CheckBox:
-                        size_hint: .2,1
+                        size_hint: .2,None
+                        height:18
+                        on_active:root._checkbox_callback(49,self.active)
+                        id:check_49
                     Label:
-                        text:"Box 1"
-                        size_hint: .8,1
-                BoxLayout:
-                    orientation: "horizontal"
-                    size_hint:1,2
-                    top:self.height
-                    CheckBox:
-                        size_hint: .2,1
-                    Label:
-                        text:"Box 1"
-                        size_hint: .8,1
-                BoxLayout:
-                    orientation: "horizontal"
-                    size_hint:1,2
-                    top:self.height
-                    CheckBox:
-                        size_hint: .2,1
-                    Label:
-                        text:"Box Last"
-                        size_hint: .8,1
+                        text:"VGBL: Resgates"
+                        size_hint: .8,None
+                        height:18
+                        valign:"center"
+                        halign:"left"
+                        texture_size: self.size
+                        text_size: self.size
+                        shorten:True
+                        shorten_from:"right"
         BoxLayout:
             orientation:"horizontal"
             size_hint: 1,.2
             XButton:
                 text:"OK"
-                #on_release:root._check_callback_ok()
+                on_release:root._check_popup_callback(True)
             XButton:
                 text:"Cancel"
-                #on_release:root._check_callback_cancel()
+                on_release:root._check_popup_callback(False)

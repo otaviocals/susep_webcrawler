@@ -32,6 +32,7 @@ from kivy.clock import Clock
 from os.path import join, isdir, expanduser, isfile
 from sys import platform
 import subprocess
+from pathlib import Path
 from kivy.lang import Builder
 from libs.file import XFolder
 from libs.xpopup import XPopup
@@ -86,8 +87,32 @@ def resource_path(relative_path):
 
 logo_path = resource_path("logo"+slash+"logo.png")
 phantom_path = resource_path(phantom)
-r_script_path = resource_path("rscripts"+slash+"hello.R")
+r_script_path = resource_path("rscripts"+slash+"analysis.R")
 kivi_app_path = resource_path("kivy"+slash+"app_screen.kv")
+config_path = resource_path("config.txt")
+
+
+
+#global analysis_config
+analysis_config = [False]*50
+
+#Loading saved configurations
+
+if(Path(config_path).is_file()):
+    with open(config_path,"r") as f:
+        configs = f.readlines()
+        configs = [x.strip() for x in configs]
+        analysis_config_string = configs[0][1:len(configs[0])-1].split(", ")
+        i=0
+        for x in analysis_config_string:
+            analysis_config[i] = (x == "True")
+            i+=1
+else:
+    with open(config_path,"w") as f:
+        print(analysis_config,file=f)
+
+#global new_analysis_config
+new_analysis_config = analysis_config[:]
 
 #Setting links to scrap from
 
@@ -98,66 +123,6 @@ links = []
 
 Builder.load_file(kivi_app_path)
 
-#Builder.load_string('''
-#<AppScreen>
-#    BoxLayout:
-#        orientation: "horizontal"
-#        Image:
-#            source: ""
-#            size_hint: None, None
-#            size: 150,200
-#            pos_hint: {"center_y": 0.5, "center_x": 0.5}
-#            id: ce_logo
-#        Label:
-#            text:"Webscraper\\nSeries - SUSEP"
-#            markup: True
-#            size_hint: None, None
-#            size: 300, 200
-#            pos_hint: {"center_y": 0.5, "center_x": 0.5}
-#    BoxLayout:
-#        orientation: "vertical"
-#        id: box_2
-#        XButton:
-#            text: 'Selecione a Pasta'
-#            on_release: root._folder_dialog()
-#            size_hint: None, None
-#            size: 150, 50
-#            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-#            id: folder_button
-#        Label:
-#            text: "Pasta selecionada:    " + root.default_folder
-#            size: 450, 30
-#            size_hint: None, None
-#            id: text_input
-#    BoxLayout:
-#        orientation: "vertical"
-#        XButton:
-#            text: "Analises Selecionadas"
-#            size: 150,50
-#            size_hint: None, None
-#            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-#            id: check_button
-#    FloatLayout:
-#        ToggleButton:
-#            text: "Stop" if self.state == "down" else "Start"
-#            size: 150, 50
-#            size_hint: None, None
-#            pos_hint: {"center_y": 0.5, "center_x": 0.5}
-#            group: "start"
-#            on_state: root.start(*args)
-#            id: start_button
-#    BoxLayout:
-#        orientation: "vertical"
-#        TextInput:
-#            text: ""
-#            hint_text: "Log Output"
-#            multiline: True
-#            readonly: True
-#            id: log_output
-#
-#''')
-
-
 
 ######################
 #    App Functions   #
@@ -165,9 +130,7 @@ Builder.load_file(kivi_app_path)
 
 class AppScreen(GridLayout):
 
-
     default_folder = expanduser("~") + slash + "Documents"
-
     global sel_folder
     sel_folder = default_folder
 
@@ -255,18 +218,25 @@ class AppScreen(GridLayout):
     def _folder_dialog(self):
         XFolder(on_dismiss=self._filepopup_callback, path=expanduser(u'~'))
 
-    def _check_callback_ok(self):
-        print("hehe")
 
-    def _check_callback_cancel(self):
-        print("hehe")
 
     def _check_dialog(self):
         popup = CheckPopup()
+
         popup.ids.scroll_grid_1.bind(minimum_height=popup.ids.scroll_grid_1.setter("height"))
         popup.ids.scroll_grid_2.bind(minimum_height=popup.ids.scroll_grid_2.setter("height"))
         popup.ids.scroll_grid_3.bind(minimum_height=popup.ids.scroll_grid_3.setter("height"))
+
+        popup.title="Selecao de Consultas"
+
+        global analysis_config
+        global new_analysis_config
+        new_analysis_config = analysis_config[:]
+        for i in range(0,50):
+            popup.ids["check_"+str(i)].active=new_analysis_config[i]
+
         popup.open()
+
 
 #Setting window layout
 
@@ -286,6 +256,21 @@ class AppScreen(GridLayout):
 
 
 class CheckPopup(XPopup):
+    def _checkbox_callback(self,n,value):
+        global new_analysis_config
+        new_analysis_config[n]=value
+
+    def _check_popup_callback(self,value):
+        global new_analysis_config
+        global analysis_config
+        if value:
+            analysis_config = new_analysis_config[:]
+            with open(config_path,"w") as f:
+                print(analysis_config,file=f)
+            self.dismiss()
+        else:
+            new_analysis_config = analysis_config[:]
+            self.dismiss()
     pass
 
 ######################
@@ -293,7 +278,7 @@ class CheckPopup(XPopup):
 ######################
 
 
-class Taxa_de_JurosApp(App):
+class SUSEP(App):
 
     def build(self):
         self.icon = logo_path
@@ -307,4 +292,4 @@ class Taxa_de_JurosApp(App):
 ######################
 
 if __name__ == "__main__" :
-    Taxa_de_JurosApp().run()
+    SUSEP().run()
