@@ -283,7 +283,7 @@ class SUSEP(App):
     def build(self):
         self.icon = logo_path
         self.resizable = 0
-        self.title = "Webscraper de Taxa de Juros"
+        self.title = "Webscraper SUSEP"
         self.log_enable = 0
         return AppScreen()
 
