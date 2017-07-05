@@ -112,7 +112,7 @@ if(Path(config_path).is_file()):
         ent_1_string = configs[3][1:len(configs[3])-1].split(", ")
         ram_1_string = configs[4][1:len(configs[4])-1].split(", ")
         deltatime_1_string = configs[5][1:len(configs[5])-1].split(", ")
-        analysis_check_string = configs[6][1:len(configs[5])-1]
+        analysis_check_string = configs[6][1:len(configs[6])-1]
 
         i=0
         for x in analysis_config_string:
@@ -185,8 +185,8 @@ class AppScreen(GridLayout):
         self.ids.log_output.text += "Starting at "+str(datetime.datetime.now())+"\n"
 
         print("Webscraper Starting...")
-        log_file.write("Download Starting...\n")
-        self.ids.log_output.text += "Download Starting...\n"
+        log_file.write("Webscraper Starting...\n")
+        self.ids.log_output.text += "Websccraper Starting...\n"
 
         start_time_seconds = time.time()
         self.ids.start_button.disabled = True
@@ -201,8 +201,16 @@ class AppScreen(GridLayout):
 
     #Running R scripts
 
-        r_output = subprocess.check_output(["Rscript",r_script_path],universal_newlines=True)
-        #print(r_output)
+        print("Running Analysis...")
+        log_file.write("Running Analysis...\n")
+        self.ids.log_output.text += "Running Analysis...\n"
+
+        log_file.close()
+
+        r_output = subprocess.check_output(["Rscript",r_script_path, slash, sel_folder,config_path, sel_folder+slash+"logs"+slash+"history.log"],universal_newlines=True)
+        print(r_output)
+
+        log_file = open((sel_folder+slash+"logs"+slash+"history.log"),"a",encoding="utf-8")
 
     #Ending scrap
 
@@ -280,13 +288,15 @@ class AppScreen(GridLayout):
         global new_ram_1
         global deltatime_1
         global new_deltatime_1
+
         new_analysis_check = analysis_check[:]
         new_analysis_config = analysis_config[:]
         new_dates_1 = dates_1[:]
         new_ent_1 = ent_1[:]
         new_ram_1 = ram_1[:]
         new_deltatime_1 = deltatime_1[:]
-        popup.ids.check_analysis_1.active=analysis_check[0]
+
+        popup.ids.check_analysis_1.active=new_analysis_check[0]
         for i in range(0,18):
             popup.ids["check_"+str(i)].active=new_analysis_config[i]
         popup.ids.date_1_1.text=new_dates_1[0]
