@@ -128,18 +128,25 @@ def Webscraper(folder, print_output = None, visual_output = None, phantom_path =
         else:
             with open(folder_logs+slash+"date.log","w") as f:
                 print(last_date,file=f)
-            print("New data detected! Downloading data...")
-            if not print_output == None:
-                print_output.write("New data detected! Downloading data...\n")
-            if not visual_output == None:
-                visual_output.append("New data detected! Downloading data...\n")
 
         #Deleting Old Data
+
+            print("New data detected! Removing old data...")
+            if not print_output == None:
+                print_output.write("New data detected! Removing old data...\n")
+            if not visual_output == None:
+                visual_output.append("New data detected! Removing old data...\n")
 
             for fl in glob(folder_data+slash+"*"):
                 remove(fl)
 
         #Downloading Data
+
+            print("Downloading new data...")
+            if not print_output == None:
+                print_output.write("Downloading new data...\n")
+            if not visual_output == None:
+                visual_output.append("Downloading new data...\n")
 
             data_source = browser.find_elements_by_xpath("//form[@id=\"aspnetForm\"]/div[4]/table/tbody/tr/td/table[2]/tbody/tr[9]/td/font/div/a")
             data_address = data_source[0].get_attribute("href")
