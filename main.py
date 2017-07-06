@@ -88,7 +88,8 @@ def resource_path(relative_path):
 
 logo_path = resource_path("logo"+slash+"logo.png")
 phantom_path = resource_path(phantom)
-r_script_path = resource_path("rscripts"+slash+"analysis.R")
+r_script_path = resource_path("rscripts")
+r_libs_path = resource_path("rlibs")
 kivi_app_path = resource_path("kivy"+slash+"app_screen.kv")
 config_path = resource_path("config.txt")
 
@@ -176,6 +177,8 @@ class AppScreen(GridLayout):
     def scrap(self,event):
         if(not isdir(sel_folder+slash+"logs")):
             makedirs(sel_folder+slash+"logs")
+        if(not isdir(sel_folder+slash+"proc_data")):
+            makedirs(sel_folder+slash+"proc_data")
         log_file = open((sel_folder+slash+"logs"+slash+"history.log"),"a",encoding="utf-8")
 
     #Starting scrap
@@ -207,7 +210,7 @@ class AppScreen(GridLayout):
 
         log_file.close()
 
-        r_output = subprocess.check_output(["Rscript",r_script_path, slash, sel_folder,config_path, sel_folder+slash+"logs"+slash+"history.log"],universal_newlines=True)
+        r_output = subprocess.check_output(["Rscript",r_script_path+slash+"analysis.R", slash, sel_folder,config_path, r_script_path,r_libs_path, sel_folder+slash+"logs"+slash+"history.log"],universal_newlines=True)
         print(r_output)
 
         log_file = open((sel_folder+slash+"logs"+slash+"history.log"),"a",encoding="utf-8")
