@@ -554,9 +554,39 @@
                         size_hint:0.45,1
                         text:"Anual"
             BoxLayout:
-                orientation:"vertical"
+                orientation: "vertical"
+                padding:0,10
+                spacing:10
+                size_hint:1,.1
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint: 1,.09
+                    Label:
+                        text: "Premios Ganhos de Reseguradoras"
+                        size_hint: 1,.05
+                    CheckBox:
+                        size_hint: 1,.03
+                        id:check_analysis_2
+                        #on_active:root._checkanalysis_callback(self.active)
+                    BoxLayout:
+                        size_hint:1,.35
             BoxLayout:
-                orientation:"vertical"
+                orientation: "vertical"
+                padding:0,10
+                spacing:10
+                size_hint:1,.1
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint: 1,.09
+                    Label:
+                        text: "Demonstracoes Contabeis"
+                        size_hint: 1,.05
+                    CheckBox:
+                        size_hint: 1,.03
+                        id:check_analysis_3
+                        #on_active:root._checkanalysis_callback(self.active)
+                    BoxLayout:
+                        size_hint:1,.35
         BoxLayout:
             orientation:"horizontal"
             size_hint: 1,.1

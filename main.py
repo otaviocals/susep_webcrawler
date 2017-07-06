@@ -45,6 +45,7 @@ import datetime
 import gc
 import sys
 import os
+import shutil
 
 
 ######################
@@ -204,16 +205,24 @@ class AppScreen(GridLayout):
 
     #Running R scripts
 
-        print("Running Analysis...")
-        log_file.write("Running Analysis...\n")
-        self.ids.log_output.text += "Running Analysis...\n"
+        r_verify = shutil.which("Rscript")
 
-        log_file.close()
+        if(not r_verify == None):
+            print("Running Analysis...")
+            log_file.write("Running Analysis...\n")
+            self.ids.log_output.text += "Running Analysis...\n"
 
-        r_output = subprocess.check_output(["Rscript",r_script_path+slash+"analysis.R", slash, sel_folder,config_path, r_script_path,r_libs_path, sel_folder+slash+"logs"+slash+"history.log"],universal_newlines=True)
-        print(r_output)
+            log_file.close()
 
-        log_file = open((sel_folder+slash+"logs"+slash+"history.log"),"a",encoding="utf-8")
+            r_output = subprocess.check_output(["Rscript",r_script_path+slash+"analysis.R", slash, sel_folder,config_path, r_script_path,r_libs_path, sel_folder+slash+"logs"+slash+"history.log"],universal_newlines=True)
+            print(r_output)
+
+            log_file = open((sel_folder+slash+"logs"+slash+"history.log"),"a",encoding="utf-8")
+
+        else:
+            print("R compiler not found.")
+            log_file.write("R compiler not found.\n")
+            self.ids.log_output.text += "R compiler not found.\n"
 
     #Ending scrap
 

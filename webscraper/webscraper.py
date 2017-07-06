@@ -99,13 +99,13 @@ def Webscraper(folder, print_output = None, visual_output = None, phantom_path =
 
     with closing(PhantomJS(phantom_path)) as browser:
 
-        browser.implicitly_wait(5)
+        browser.implicitly_wait(50)
         tries = 0
 
     #Getting Newest Data Date
 
         browser.get(url)
-        while tries <= 5:
+        while tries <= 20:
 
             date_source = browser.find_elements_by_xpath("//form[@id=\"aspnetForm\"]/div[4]/table/tbody/tr/td/table[2]/tbody/tr[9]/td/font/div/span")
             date_string = date_source[0].text
