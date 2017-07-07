@@ -35,9 +35,9 @@ from sys import platform
 import subprocess
 from pathlib import Path
 from kivy.lang import Builder
-from libs.file import XFolder
-from libs.xpopup import XPopup
-import libs.tools
+from pylibs.file import XFolder
+from pylibs.xpopup import XPopup
+import pylibs.tools
 from time import sleep
 from webscraper.webscraper import Webscraper
 import time
@@ -46,7 +46,6 @@ import gc
 import sys
 import os
 import shutil
-
 
 ######################
 #    Pre-Settings    #
@@ -91,9 +90,12 @@ logo_path = resource_path("logo"+slash+"logo.png")
 phantom_path = resource_path(phantom)
 r_script_path = resource_path("rscripts")
 r_libs_path = resource_path("rlibs")
-kivi_app_path = resource_path("kivy"+slash+"app_screen.kv")
-config_path = resource_path("config.txt")
+kivi_app_path = resource_path("kivylibs"+slash+"app_screen.kv")
+config_path = os.path.abspath(".")+slash+"config.txt"
 
+print(os.path.abspath("."))
+
+#Initiating config data
 
 analysis_check = [True]
 analysis_config = [False]*18
@@ -201,7 +203,6 @@ class AppScreen(GridLayout):
         new_data = Webscraper(sel_folder,log_file,str_output_logger,phantom_path)
         self.ids.log_output.text += "".join(str_output_logger)
         gc.collect()
-        #print(new_data)
 
     #Running R scripts
 
@@ -416,7 +417,6 @@ class CheckPopup(XPopup):
                 filelines[5]=str(deltatime_1)+"\n"
                 filelines[6]=str(analysis_check)+"\n"
                 f.writelines(filelines)
-                #print(analysis_config,file=f)
             self.dismiss()
         else:
             new_analysis_check = analysis_check[:]

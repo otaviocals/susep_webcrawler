@@ -12,7 +12,6 @@
 #Required external modules: Selenium, BeautifoulSoup4, Hashlib
 
 from csv import writer, reader
-from unicodedata import normalize
 from contextlib import closing
 from selenium.webdriver import PhantomJS
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,30 +19,22 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from pathlib import Path
-from hashlib import sha512
 from os.path import isdir
 from os import makedirs, getcwd, remove
 from sys import platform
-from time import sleep
 from datetime import datetime, timedelta
 from dateutil.parser import parse
 from urllib.request import urlretrieve
 from clint.textui import progress
-from progressbar import ProgressBar, Percentage, Bar, ETA, FileTransferSpeed, RotatingMarker
 from glob import glob
 from zipfile import ZipFile
-import requests
-import lxml
 import sys
-import gc
-
 
 ######################
 # Webscrapping Stage #
 ######################
 
 def Webscraper(folder, print_output = None, visual_output = None, phantom_path = ""):
-
 
     url="http://www2.susep.gov.br/menuestatistica/ses/principal.aspx"
     rows = []
@@ -62,7 +53,6 @@ def Webscraper(folder, print_output = None, visual_output = None, phantom_path =
 
     folder_data = folder+slash+"data"
     folder_logs = folder+slash+"logs"
-
 
 
 #Checking Folders Existence
@@ -95,7 +85,6 @@ def Webscraper(folder, print_output = None, visual_output = None, phantom_path =
             recorded_date = parse(date_log_content[0])
 
 #Getting Raw Data
-
 
     with closing(PhantomJS(phantom_path)) as browser:
 

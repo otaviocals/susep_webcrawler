@@ -3,17 +3,17 @@
 block_cipher = None
 
 a = Analysis(['main.py'],
-             pathex=["/home/cals/Projects/susep_webcrawler","/usr/lib/python3.6/site-packages/kivy"],
+             pathex=["/home/cals/Projects/susep_webcrawler"],
              binaries=None,
              datas=[
-("libs","libs"),
+("pylibs","pylibs"),
 ("logo","logo"),
-("kivy","kivy"),
+("kivylibs","kivylibs"),
 ("rlibs","rlibs"),
 ("rscripts","rscripts"),
 ("webscraper","webscraper"),
-("phantomjs/phantomjs","phantom")],
-             hiddenimports=["six","packaging","packaging.version","packaging.specifiers","packaging.requirements","appdirs","kivy","kivy.garden","kivy.app","kivy.uix","cython","pygame","pyenchant","opencv-contrib-python","selenium"],
+("phantomjs/phantomjs","phantomjs")],
+             hiddenimports=["six","packaging","packaging.version","packaging.specifiers","packaging.requirements","appdirs","kivy"],
              hookspath=["."],
              runtime_hooks=[],
              excludes=[],

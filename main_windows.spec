@@ -2,18 +2,17 @@
 
 block_cipher = None
 
-
 a = Analysis(['main.py'],
              pathex=['/home/cals/Projects/susep_webcrawler'],
              binaries=None,
              datas=[
-("libs","libs"),
+("pylibs","pylibs"),
 ("logo","logo"),
-("kivy","kivy"),
+("kivylibs","kivylibs"),
 ("rlibs","rlibs"),
 ("rscripts","rscripts"),
 ("webscraper","webscraper"),
-("phantomjs/phantomjs.exe","phantom")],
+("phantomjs/phantomjs.exe","phantomjs")],
              hiddenimports=["six","packaging","packaging.version","packaging.specifiers","packaging.requirements","appdirs"],
              hookspath=["."],
              runtime_hooks=[],
@@ -28,9 +27,9 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='Webscraper de Taxa de Juros',
+          name='SUSEP_Webscraper',
           debug=False,
           strip=False,
           upx=True,
-	  icon='logo.ico',
+	      icon='logo.ico',
           console=True )
