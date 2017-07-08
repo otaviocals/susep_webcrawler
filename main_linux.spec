@@ -4,7 +4,7 @@ block_cipher = None
 
 a = Analysis(['main.py'],
              pathex=["/home/cals/Projects/susep_webcrawler"],
-             binaries=None,
+             binaries=[('SDL2.dll',".")],
              datas=[
 ("pylibs","pylibs"),
 ("logo","logo"),
@@ -13,7 +13,7 @@ a = Analysis(['main.py'],
 ("rscripts","rscripts"),
 ("webscraper","webscraper"),
 ("phantomjs/phantomjs","phantomjs")],
-             hiddenimports=["six","packaging","packaging.version","packaging.specifiers","packaging.requirements","appdirs","kivy"],
+             hiddenimports=["six","packaging","packaging.version","packaging.specifiers","packaging.requirements","appdirs","kivy", "opencv-python","numpy"],
              hookspath=["."],
              runtime_hooks=[],
              excludes=[],

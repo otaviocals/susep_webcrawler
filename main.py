@@ -8,7 +8,6 @@
 #                                                                                                       #
 #########################################################################################################
 
-
 #Required External Modules: cython, pygame, kivy
 
 from kivy.app import App
@@ -53,8 +52,8 @@ import shutil
 
 #Setting configurations
 
-Config.set("kivy","log_enable","0")
-Config.set("kivy","log_level","critical")
+Config.set("kivy","log_enable","1")
+Config.set("kivy","log_level","debug")
 Config.set("graphics","width","450")
 Config.set("graphics","height","900")
 Config.set("graphics","fullscreen","0")
@@ -63,6 +62,14 @@ Config.set("graphics","resizable","0")
 Config.write()
 
 current_os = platform
+
+try:
+    import win32api
+    win32api.SetDllDirectory(sys._MEIPASS)
+except:
+    pass 
+	
+print("hehe")
 
 
 if current_os.startswith("linux"):
@@ -93,7 +100,7 @@ r_libs_path = resource_path("rlibs")
 kivi_app_path = resource_path("kivylibs"+slash+"app_screen.kv")
 config_path = os.path.abspath(".")+slash+"config.txt"
 
-print(os.path.abspath("."))
+#print(os.path.abspath("."))
 
 #Initiating config data
 
@@ -439,7 +446,7 @@ class SUSEP(App):
         self.icon = logo_path
         self.resizable = 0
         self.title = "Webscraper SUSEP"
-        self.log_enable = 0
+        self.log_enable = 1
         return AppScreen()
 
 ######################
@@ -447,4 +454,5 @@ class SUSEP(App):
 ######################
 
 if __name__ == "__main__" :
-    SUSEP().run()
+	print("hehe")
+	SUSEP().run()

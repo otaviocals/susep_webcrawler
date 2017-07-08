@@ -12,8 +12,8 @@ setwd(data_folder)
 
 #Loading libraries
 
-package_list <- c("openxlsx")
-	for( i in length(package_list))
+package_list <- c("Rcpp","openxlsx")
+	for( i in 1:length(package_list))
 	{
 		if (!require(package_list[i],character.only = TRUE,lib.loc=r_libs))
     			{
