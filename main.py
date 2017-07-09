@@ -53,7 +53,10 @@ import shutil
 #Setting configurations
 
 Config.set("kivy","log_enable","1")
-Config.set("kivy","log_level","debug")
+Config.set("kivy","log_level","critical")
+Config.set("graphics","position","custom")
+Config.set("graphics","top","10")
+Config.set("graphics","left","10")
 Config.set("graphics","width","450")
 Config.set("graphics","height","900")
 Config.set("graphics","fullscreen","0")
@@ -67,10 +70,7 @@ try:
     import win32api
     win32api.SetDllDirectory(sys._MEIPASS)
 except:
-    pass 
-	
-print("hehe")
-
+    pass
 
 if current_os.startswith("linux"):
     slash = "/"
@@ -102,7 +102,14 @@ config_path = os.path.abspath(".")+slash+"config.txt"
 
 #print(os.path.abspath("."))
 
+
+#######################
+#     Config Data     #
+#######################
+
 #Initiating config data
+
+#1st Analysis satrtup
 
 analysis_check = [True]
 analysis_config = [False]*18
@@ -111,12 +118,28 @@ ent_1=[True,""]
 ram_1=[True,""]
 deltatime_1=[True,False,False,False]
 
+#2nd Analysis startup
+
+analysis_2_check = [True]
+analysis_2_config = [False]*13
+dates_2=["01/01/2017","01/02/2017"]
+ent_2=[True,""]
+ram_2=[True,""]
+grup_2=[True,""]
+deltatime_2=[True,False,False,False]
+
+#3rd Analysis startup
+
+analysis_3_check = [True]
+
 #Loading saved configurations
 
 if(Path(config_path).is_file()):
     with open(config_path,"r") as f:
         configs = f.readlines()
         configs = [x.strip() for x in configs]
+
+    #1st Analysis Config Read
 
         analysis_config_string = configs[1][1:len(configs[1])-1].split(", ")
         dates_1_string = configs[2][1:len(configs[2])-1].split(", ")
@@ -145,6 +168,44 @@ if(Path(config_path).is_file()):
             i+=1
 
         analysis_check[0]=(analysis_check_string == "True")
+
+    #2nd Analysis Config Read
+        analysis_config_2_string = configs[8][1:len(configs[8])-1].split(", ")
+        dates_2_string = configs[9][1:len(configs[9])-1].split(", ")
+        ent_2_string = configs[10][1:len(configs[10])-1].split(", ")
+        ram_2_string = configs[11][1:len(configs[11])-1].split(", ")
+        grup_2_string = configs[12][1:len(configs[12])-1].split(", ")
+        deltatime_2_string = configs[13][1:len(configs[13])-1].split(", ")
+        analysis_2_check_string = configs[14][1:len(configs[14])-1]
+
+        i=0
+        for x in analysis_config_2_string:
+            analysis_2_config[i] = (x == "True")
+            i+=1
+
+        dates_2[0]=dates_2_string[0][1:len(dates_2_string[0])-1]
+        dates_2[1]=dates_2_string[1][1:len(dates_2_string[1])-1]
+
+        ent_2[0]=(ent_2_string[0]=="True")
+        ent_2[1]=ent_2_string[1][1:len(ent_2_string[1])-1]
+
+        ram_2[0]=(ram_2_string[0]=="True")
+        ram_2[1]=ram_2_string[1][1:len(ram_2_string[1])-1]
+
+        grup_2[0]=(grup_2_string[0]=="True")
+        grup_2[1]=grup_2_string[1][1:len(grup_2_string[1])-1]
+
+        i=0
+        for x in deltatime_2_string:
+            deltatime_2[i] = (x == "True")
+            i+=1
+
+        analysis_2_check[0]=(analysis_2_check_string == "True")
+
+    #3rd Analysis Config Read
+        analysis_3_check_string = configs[16][1:len(configs[16])-1]
+        analysis_3_check[0]=(analysis_3_check_string == "True")
+
 else:
     with open(config_path,"a") as f:
         f.write("Config Analysis 1\n")
@@ -155,6 +216,19 @@ else:
         f.write(str(deltatime_1)+"\n")
         f.write(str(analysis_check)+"\n")
 
+        f.write("Config Analysis 2\n")
+        f.write(str(analysis_2_config)+"\n")
+        f.write(str(dates_2)+"\n")
+        f.write(str(ent_2)+"\n")
+        f.write(str(ram_2)+"\n")
+        f.write(str(grup_2)+"\n")
+        f.write(str(deltatime_2)+"\n")
+        f.write(str(analysis_2_check)+"\n")
+
+        f.write("Config Analysis 3\n")
+        f.write(str(analysis_3_check)+"\n")
+
+#1st Analysis temp values
 new_analysis_check = analysis_check[:]
 new_analysis_config = analysis_config[:]
 new_dates_1 = dates_1[:]
@@ -162,9 +236,17 @@ new_ent_1 = ent_1[:]
 new_ram_1 = ram_1[:]
 new_deltatime_1 = deltatime_1[:]
 
-#Setting links to scrap from
+#2nd Analysis temp values
+new_analysis_2_check = analysis_2_check[:]
+new_analysis_2_config = analysis_2_config[:]
+new_dates_2=dates_2[:]
+new_ent_2 = ent_2[:]
+new_ram_2 = ram_2[:]
+new_grup_2 = grup_2[:]
+new_deltatime_2=deltatime_2[:]
 
-links = []
+#3rd Analysis temp values
+new_analysis_3_check = analysis_3_check[:]
 
 
 #Building GUI
@@ -291,8 +373,8 @@ class AppScreen(GridLayout):
         popup = CheckPopup()
 
         popup.ids.scroll_grid_1.bind(minimum_height=popup.ids.scroll_grid_1.setter("height"))
-#        popup.ids.scroll_grid_2.bind(minimum_height=popup.ids.scroll_grid_2.setter("height"))
-#        popup.ids.scroll_grid_3.bind(minimum_height=popup.ids.scroll_grid_3.setter("height"))
+        popup.ids.scroll_grid_2.bind(minimum_height=popup.ids.scroll_grid_2.setter("height"))
+        popup.ids.scroll_grid_3.bind(minimum_height=popup.ids.scroll_grid_3.setter("height"))
 
         popup.title="Selecao de Consultas"
 
@@ -309,12 +391,48 @@ class AppScreen(GridLayout):
         global deltatime_1
         global new_deltatime_1
 
+        global analysis_2_check
+        global new_analysis_2_check
+        global analysis_2_config
+        global new_analysis_2_config
+        global dates_2
+        global new_dates_2
+        global ent_2
+        global new_ent_2
+        global ram_2
+        global new_ram_2
+        global grup_2
+        global new_grup_2
+        global deltatime_2
+        global new_deltatime_2
+
+        global analysis_3_check
+        global new_analysis_3_check
+
+        #Initiating Analysis 1 values
+
         new_analysis_check = analysis_check[:]
         new_analysis_config = analysis_config[:]
         new_dates_1 = dates_1[:]
         new_ent_1 = ent_1[:]
         new_ram_1 = ram_1[:]
         new_deltatime_1 = deltatime_1[:]
+
+        #Initiating Analysis 2 values
+
+        new_analysis_2_check = analysis_2_check[:]
+        new_analysis_2_config = analysis_2_config[:]
+        new_dates_2=dates_2[:]
+        new_ent_2 = ent_2[:]
+        new_ram_2 = ram_2[:]
+        new_grup_2 = grup_2[:]
+        new_deltatime_2=deltatime_2[:]
+
+        #Initiating Analysis 3 values
+
+        new_analysis_3_check = analysis_3_check[:]
+
+        #Setting Popup Values
 
         popup.ids.check_analysis_1.active=new_analysis_check[0]
         for i in range(0,18):
@@ -329,6 +447,24 @@ class AppScreen(GridLayout):
         popup.ids.check_time_1_2.active=new_deltatime_1[1]
         popup.ids.check_time_1_3.active=new_deltatime_1[2]
         popup.ids.check_time_1_4.active=new_deltatime_1[3]
+
+        popup.ids.check_analysis_2.active=new_analysis_2_check[0]
+        for i in range(0,len(new_analysis_2_config)):
+            popup.ids["check2_"+str(i)].active=new_analysis_2_config[i]
+        popup.ids.date_2_1.text=new_dates_2[0]
+        popup.ids.date_2_2.text=new_dates_2[1]
+        popup.ids.check_ent_2.active=new_ent_2[0]
+        popup.ids.text_ent_2.text=new_ent_2[1]
+        popup.ids.check_ram_2.active=new_ram_2[0]
+        popup.ids.text_ram_2.text=new_ram_2[1]
+        popup.ids.check_grup_2.active=new_grup_2[0]
+        popup.ids.text_grup_2.text=new_grup_2[1]
+        popup.ids.check_time_2_1.active=new_deltatime_2[0]
+        popup.ids.check_time_2_2.active=new_deltatime_2[1]
+        popup.ids.check_time_2_3.active=new_deltatime_2[2]
+        popup.ids.check_time_2_4.active=new_deltatime_2[3]
+
+        popup.ids.check_analysis_3.active=new_analysis_3_check[0]
 
         popup.open()
 
@@ -351,21 +487,34 @@ class AppScreen(GridLayout):
 
 
 class CheckPopup(XPopup):
+
+#1st column analysis
+
+    #Analysis On/Off
+
     def _checkanalysis_callback(self,value):
         global new_analysis_check
         new_analysis_check[0] = value
+
+    #Analysis check boxes
 
     def _checkbox_callback(self,n,value):
         global new_analysis_config
         new_analysis_config[n]=value
 
+    #Analysis Company field
+
     def _entbox_callback(self,value):
         global new_ent_1
         new_ent_1[0]=value
 
+    #Analysis Field field
+
     def _rambox_callback(self,value):
         global new_ram_1
         new_ram_1[0]=value
+
+    #Analysis time interval field
 
     def _deltatime_callback(self,n):
         global deltatime_1
@@ -390,6 +539,74 @@ class CheckPopup(XPopup):
             new_deltatime_1[2]=False
             new_deltatime_1[3]=True
 
+#2nd column analysis
+
+    #Analysis On/Off
+
+    def _checkanalysis_2_callback(self,value):
+        global new_analysis_2_check
+        new_analysis_2_check[0] = value
+
+    #Analysis check boxes
+
+    def _checkbox_2_callback(self,n,value):
+        global new_analysis_2_config
+        new_analysis_2_config[n]=value
+
+    #Analysis Company field
+
+    def _entbox_2_callback(self,value):
+        global new_ent_2
+        new_ent_2[0]=value
+
+    #Analysis Field field
+
+    def _rambox_2_callback(self,value):
+        global new_ram_2
+        new_ram_2[0]=value
+
+    #Analysis Group field
+
+    def _groupbox_2_callback(self,value):
+        global new_grup_2
+        new_grup_2[0]=value
+
+
+    #Analysis time interval field
+
+    def _deltatime_2_callback(self,n):
+        global deltatime_2
+        if n==0:
+            new_deltatime_2[0]=True
+            new_deltatime_2[1]=False
+            new_deltatime_2[2]=False
+            new_deltatime_2[3]=False
+        elif n==1:
+            new_deltatime_2[0]=False
+            new_deltatime_2[1]=True
+            new_deltatime_2[2]=False
+            new_deltatime_2[3]=False
+        elif n==2:
+            new_deltatime_2[0]=False
+            new_deltatime_2[1]=False
+            new_deltatime_2[2]=True
+            new_deltatime_2[3]=False
+        elif n==3:
+            new_deltatime_2[0]=False
+            new_deltatime_2[1]=False
+            new_deltatime_2[2]=False
+            new_deltatime_2[3]=True
+
+#3rd column analysis
+
+    #Analysis On/Off
+
+    def _checkanalysis_3_callback(self,value):
+        global new_analysis_3_check
+        new_analysis_3_check[0] = value
+
+#Saving fields do data
+
     def _check_popup_callback(self,value):
         global analysis_check
         global new_analysis_check
@@ -403,7 +620,29 @@ class CheckPopup(XPopup):
         global new_ram_1
         global deltatime_1
         global new_deltatime_1
+
+        global analysis_2_check
+        global new_analysis_2_check
+        global analysis_2_config
+        global new_analysis_2_config
+        global dates_2
+        global new_dates_2
+        global ent_2
+        global new_ent_2
+        global ram_2
+        global new_ram_2
+        global grup_2
+        global new_grup_2
+        global deltatime_2
+        global new_deltatime_2
+
+        global analysis_3_check
+        global new_analysis_3_check
+
         if value:
+
+            #Analysis 1 Save
+
             new_dates_1[0] = self.ids.date_1_1.text
             new_dates_1[1] = self.ids.date_1_2.text
             new_ent_1[1] = self.ids.text_ent_1.text
@@ -414,24 +653,73 @@ class CheckPopup(XPopup):
             ent_1 = new_ent_1[:]
             ram_1 = new_ram_1[:]
             deltatime_1 = new_deltatime_1[:]
+
+            #Analysis 2 save
+
+            new_dates_2[0] = self.ids.date_2_1.text
+            new_dates_2[1] = self.ids.date_2_2.text
+            new_ent_2[1] = self.ids.text_ent_2.text
+            new_ram_2[1] = self.ids.text_ram_2.text
+            new_grup_2[1] = self.ids.text_grup_2.text
+            analysis_2_check = new_analysis_2_check[:]
+            analysis_2_config = new_analysis_2_config[:]
+            dates_2 = new_dates_2[:]
+            ent_2 = new_ent_2[:]
+            ram_2 = new_ram_2[:]
+            grup_2 = new_grup_2[:]
+            deltatime_2 = new_deltatime_2[:]
+
+            #Analysis 3 save
+
+            analysis_3_check = new_analysis_3_check[:]
+
+            #Saving file
             with open(config_path,"r") as f:
                 filelines=f.readlines()
             with open(config_path,"w") as f:
+                #Analysis 1
                 filelines[1]=str(analysis_config)+"\n"
                 filelines[2]=str(dates_1)+"\n"
                 filelines[3]=str(ent_1)+"\n"
                 filelines[4]=str(ram_1)+"\n"
                 filelines[5]=str(deltatime_1)+"\n"
                 filelines[6]=str(analysis_check)+"\n"
+
+                #Analysis 2
+                filelines[8]=str(analysis_2_config)+"\n"
+                filelines[9]=str(dates_2)+"\n"
+                filelines[10]=str(ent_2)+"\n"
+                filelines[11]=str(ram_2)+"\n"
+                filelines[12]=str(grup_2)+"\n"
+                filelines[13]=str(deltatime_2)+"\n"
+                filelines[14]=str(analysis_2_check)+"\n"
+
+                #Analysis 3
+                filelines[16]=str(analysis_3_check)+"\n"
+
                 f.writelines(filelines)
             self.dismiss()
         else:
+            #Analysis 1 dismiss
             new_analysis_check = analysis_check[:]
             new_analysis_config = analysis_config[:]
             new_dates_1 = dates_1[:]
             new_ent_1 = ent_1[:]
             new_ram_1 = ram_1[:]
             new_deltatime_1 = deltatime_1[:]
+
+            #Analysis 2 dismiss
+            new_analysis_2_check = analysis_2_check[:]
+            new_analysis_2_config = analysis_2_config[:]
+            new_dates_2=dates_2[:]
+            new_ent_2 = ent_2[:]
+            new_ram_2 = ram_2[:]
+            new_grup_2 = grup_2[:]
+            new_deltatime_2=deltatime_2[:]
+
+            #Analysis 3 dismiss
+            new_analysis_3_check = analysis_3_check[:]
+
             self.dismiss()
     pass
 

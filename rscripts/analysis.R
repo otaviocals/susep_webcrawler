@@ -1,4 +1,6 @@
-#Retrieving passed arguments
+##############################
+#    Retrieving arguments    #
+##############################
 
 myArgs <- commandArgs(trailingOnly = TRUE)
 slash <- myArgs[1]
@@ -22,12 +24,18 @@ package_list <- c("Rcpp","openxlsx")
 			}
 	}
 
-#Loading configuration file
+
+#########################
+#    Loading configs    #
+#########################
 
 config_data <- readLines(config_path)
 
+#Analysis 1 config
+
 run_analysis_1 <- config_data[7]=="[True]"
 
+#Param_1_1
 analysis_1_1_string <- strsplit(substring(config_data[2],2,nchar(config_data[2])-1),", ")[[1]]
 param_1_1 <- vector(length = length(analysis_1_1_string))
 for (i in 1:length(analysis_1_1_string))
@@ -35,14 +43,18 @@ for (i in 1:length(analysis_1_1_string))
         param_1_1[i] <- analysis_1_1_string[i] == "True"
     }
 
+#Param_1_2
 param_1_2 <- strsplit(substring(config_data[3],3,nchar(config_data[3])-2),"', '")[[1]]
 
+#Param_1_3
 param_1_3 <- strsplit(substring(config_data[4],2,nchar(config_data[4])-2),", '")[[1]]
 param_1_3[1] <- param_1_3[1] == "True"
 
+#Param_1_4
 param_1_4 <- strsplit(substring(config_data[5],2,nchar(config_data[5])-2),", '")[[1]]
 param_1_4[1] <- param_1_4[1] == "True"
 
+#Param_1_5
 analysis_1_5_string <- strsplit(substring(config_data[6],2,nchar(config_data[6])-1), ", ")[[1]]
 param_1_5 <- vector(length = length(analysis_1_5_string))
 for (i in 1:length(analysis_1_5_string))
@@ -50,21 +62,68 @@ for (i in 1:length(analysis_1_5_string))
         param_1_5[i] <- analysis_1_5_string[i] == "True"
     }
 
+#Final params_1
 params_1<- list(run_analysis_1,param_1_1,param_1_2,param_1_3,param_1_4,param_1_5)
+
+
+
+#Analysis 2 config
+
+run_analysis_2 <- config_data[15]=="[True]"
+
+#Param_2_1
+analysis_2_1_string <- strsplit(substring(config_data[9],2,nchar(config_data[9])-1),", ")[[1]]
+param_2_1 <- vector(length = length(analysis_2_1_string))
+for (i in 1:length(analysis_2_1_string))
+    {
+        param_2_1[i] <- analysis_2_1_string[i] == "True"
+    }
+
+#Param_2_2
+param_2_2 <- strsplit(substring(config_data[10],3,nchar(config_data[10])-2),"', '")[[1]]
+
+#Param_2_3
+param_2_3 <- strsplit(substring(config_data[11],2,nchar(config_data[11])-2),", '")[[1]]
+param_2_3[1] <- param_2_3[1] == "True"
+
+#Param_2_4
+param_2_4 <- strsplit(substring(config_data[12],2,nchar(config_data[12])-2),", '")[[1]]
+param_2_4[1] <- param_2_4[1] == "True"
+
+#Param_2_5
+param_2_5 <- strsplit(substring(config_data[13],2,nchar(config_data[13])-2),", '")[[1]]
+param_2_5[1] <- param_2_5[1] == "True"
+
+#Param_2_6
+analysis_2_6_string <- strsplit(substring(config_data[14],2,nchar(config_data[14])-1), ", ")[[1]]
+param_2_6 <- vector(length = length(analysis_2_6_string))
+for (i in 1:length(analysis_2_6_string))
+    {
+        param_2_6[i] <- analysis_2_6_string[i] == "True"
+    }
+
+params_2<- list(run_analysis_2,param_2_1,param_2_2,param_2_3,param_2_4,param_2_5,param_2_6)
+
+#Analysis 3 config
+
+run_analysis_3 <- config_data[17]=="[True]"
+
+params_3<- list(run_analysis_3)
 
 #Creating Workbook
 
 workbook <- createWorkbook()
 
-#Analysis 1
+####################
+#    Analysis 1    #
+####################
 
 if(params_1[[1]]==TRUE)
     {
         seguros <- read.csv2(paste0("data",slash,"Ses_seguros.csv"))
 
     #Subsetting py Selected Params
-
-        subset_params_1 <- c(TRUE,TRUE,TRUE,TRUE, params_1[[2]][c(1,3,4,6,8,9,14,5,2,7,10,11,12,13,16,17,18,15)])
+        subset_params_1 <- c(TRUE,TRUE,TRUE,TRUE, params_1[[2]][c(1,3,4,6,8,9,14,5,2,7,10,11,12,13,16,17,18)])
         seguros <- seguros[,subset_params_1]
 
     #Subsetting by Initial Date
@@ -111,7 +170,6 @@ if(params_1[[1]]==TRUE)
             }
     #Aggreggating by time interval
         
-#        test <- paste0("0",as.character(ceiling(as.numeric(format(as.Date(paste0(as.character(seguros$damesano),"01"),format="%Y%m%d"),"%m"))/6)))
         #Aggregate by Year/Month
         if(params_1[[6]][1] == TRUE)
             {
@@ -225,6 +283,24 @@ if(params_1[[1]]==TRUE)
         writeDataTable(workbook,"premios_sinistros_seg",format(seguros,decimal.mark=","))
     }
 
+####################
+#    Analysis 2    #
+####################
+
+if(params_2[[1]]==TRUE)
+    {
+        seguros <- read.csv2(paste0("data",slash,"Ses_seguros.csv"))
+    }
+
+####################
+#    Analysis 3    #
+####################
+
+if(params_3[[1]]==TRUE)
+    {
+        seguros <- read.csv2(paste0("data",slash,"Ses_seguros.csv"))
+    }
+
 saveWorkbook(workbook,paste0("SES-Susep-",Sys.Date(),".xlsx"),overwrite=TRUE)
 
 
@@ -238,3 +314,4 @@ saveWorkbook(workbook,paste0("SES-Susep-",Sys.Date(),".xlsx"),overwrite=TRUE)
 #head(seguros)
 #as.numeric(format(as.Date(paste0(as.character(seguros$damesano),"01"),format="%Y%m%d"),"%m"))
 #test
+params_3

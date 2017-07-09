@@ -63,6 +63,7 @@
         GridLayout:
             cols:3
             size_hint:1,.9
+            spacing:10
             BoxLayout:
                 orientation: "vertical"
                 padding:0,10
@@ -70,7 +71,7 @@
                 size_hint:1,.1
                 BoxLayout:
                     orientation: "vertical"
-                    size_hint: 1,.09
+                    size_hint: 1,.052
                     Label:
                         text: "Premios e Sinistros de Seguradoras"
                         size_hint: 1,.05
@@ -96,6 +97,16 @@
                         id:scroll_grid_1
                         minimum_height:self.height
                         top: self.height
+                        Label:
+                            text:"Premios de Seguradoras"
+                            size_hint: 1,None
+                            height:18
+                            valign:"center"
+                            halign:"left"
+                            texture_size: self.size
+                            text_size: self.size
+                            shorten:True
+                            shorten_from:"right"
                         BoxLayout:
                             orientation: "horizontal"
                             size_hint:1,None
@@ -232,10 +243,21 @@
                                 text_size: self.size
                                 shorten:True
                                 shorten_from:"right"
+                        Label:
+                            text:"Sinistros de Seguradoras"
+                            size_hint: 1,None
+                            height:18
+                            valign:"center"
+                            halign:"left"
+                            texture_size: self.size
+                            text_size: self.size
+                            shorten:True
+                            shorten_from:"right"
                         BoxLayout:
                             orientation: "horizontal"
-                            size_hint:1,2
+                            size_hint:1,None
                             top:self.height
+                            height:self.minimum_height
                             CheckBox:
                                 size_hint: .2,None
                                 height:18
@@ -255,6 +277,7 @@
                             orientation: "horizontal"
                             size_hint:1,2
                             top:self.height
+                            height:self.minimum_height
                             CheckBox:
                                 size_hint: .2,None
                                 height:18
@@ -560,16 +583,439 @@
                 size_hint:1,.1
                 BoxLayout:
                     orientation: "vertical"
-                    size_hint: 1,.09
+                    size_hint: 1,.062
                     Label:
-                        text: "Premios Ganhos de Reseguradoras"
+                        text: "Premios e Sinistros de Resseguradoras"
                         size_hint: 1,.05
                     CheckBox:
                         size_hint: 1,.03
                         id:check_analysis_2
-                        #on_active:root._checkanalysis_callback(self.active)
+                        on_active:root._checkanalysis_2_callback(self.active)
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba:0.1,0.1,0.1,1
+                        Rectangle:
+                            pos:self.pos
+                            size:self.size
+                    size_hint: 1,.124
+                    do_scroll_x: False
+                    effect_cls:ScrollEffect
+                    GridLayout:
+                        cols:1
+                        size_hint:1,None
+                        padding:0,5
+                        spacing:20
+                        id:scroll_grid_2
+                        minimum_height:self.height
+                        top: self.height
+                        Label:
+                            text:"Premios de Resseguradoras"
+                            size_hint: 1,None
+                            height:18
+                            valign:"center"
+                            halign:"left"
+                            texture_size: self.size
+                            text_size: self.size
+                            shorten:True
+                            shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,None
+                            top:self.height
+                            height:self.minimum_height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(0,self.active)
+                                id:check2_0
+                            Label:
+                                text:"Premios de Resseguro"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(1,self.active)
+                                id:check2_1
+                            Label:
+                                text:"Premios de Resseguro RVNE"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(2,self.active)
+                                id:check2_2
+                            Label:
+                                text:"Operacoes com Exterior"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(3,self.active)
+                                id:check2_3
+                            Label:
+                                text:"Retrocessoes Aceitas"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(4,self.active)
+                                id:check2_4
+                            Label:
+                                text:"Premios Cedidos de Retrocessao"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(5,self.active)
+                                id:check2_5
+                            Label:
+                                text:"Variacoes das Provisoes Tecnicas de Premios"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        Label:
+                            text:"Sinistros de Resseguradoras"
+                            size_hint: 1,None
+                            height:18
+                            valign:"center"
+                            halign:"left"
+                            texture_size: self.size
+                            text_size: self.size
+                            shorten:True
+                            shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,None
+                            top:self.height
+                            height:self.minimum_height
+                            padding:0,-18,0,-18
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(6,self.active)
+                                id:check2_6
+                            Label:
+                                text:"Sinistros"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,None
+                            top:self.height
+                            height:self.minimum_height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(7,self.active)
+                                id:check2_7
+                            Label:
+                                text:"Recuperacao de Sinistros"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(8,self.active)
+                                id:check2_8
+                            Label:
+                                text:"Salvados"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(9,self.active)
+                                id:check2_9
+                            Label:
+                                text:"Ressarcimentos"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(10,self.active)
+                                id:check2_10
+                            Label:
+                                text:"Salvados e Ressarcimentos"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(11,self.active)
+                                id:check2_11
+                            Label:
+                                text:"Variacoes das Provisoes de Sinistros Ocorridos mas nao Avisados"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_2_callback(12,self.active)
+                                id:check2_12
+                            Label:
+                                text:"Variacoes das Provisoes IBNER"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                GridLayout:
+                    cols:2
+                    size_hint:1,.05
+                    Label:
+                        size_hint:1,.15
+                        text:"Data Inicial"
+                    Label:
+                        size_hint:1,.15
+                        text:"Data Final"
+                    TextInput:
+                        size_hint:1,.15
+                        text: ""
+                        hint_text: "DD/MM/YYYY"
+                        multiline: False
+                        id:date_2_1
+                    TextInput:
+                        size_hint:1,.15
+                        text: ""
+                        hint_text: "DD/MM/YYYY"
+                        multiline: False
+                        id:date_2_2
+                BoxLayout:
+                    orientation:"vertical"
+                    size_hint:1,.05
+                    Label:
+                        text:"Empresas"
+                        size_hint:1,.1
                     BoxLayout:
-                        size_hint:1,.35
+                        orientation:"horizontal"
+                        size_hint:1,.15
+                        spacing:10
+                        CheckBox:
+                            size_hint:.05,1
+                            on_active:root._entbox_2_callback(self.active)
+                            id:check_ent_2
+                        Label:
+                            size_hint:.15,1
+                            text:"Todas"
+                        TextInput:
+                            size_hint:.8,1
+                            text:""
+                            hint_text:"Codigos das Empresas"
+                            multiline: False
+                            disabled:root.ids.check_ent_2.active
+                            id:text_ent_2
+                BoxLayout:
+                    orientation:"vertical"
+                    size_hint:1,.05
+                    Label:
+                        text:"Ramos"
+                        size_hint:1,.1
+                    BoxLayout:
+                        orientation:"horizontal"
+                        size_hint:1,.15
+                        spacing:10
+                        CheckBox:
+                            size_hint:.05,1
+                            on_active:root._rambox_2_callback(self.active)
+                            id:check_ram_2
+                        Label:
+                            size_hint:.15,1
+                            text:"Todos"
+                        TextInput:
+                            size_hint:.8,1
+                            text:""
+                            hint_text:"Codigos dos Ramos"
+                            multiline: False
+                            disabled:root.ids.check_ram_2.active
+                            id:text_ram_2
+                BoxLayout:
+                    orientation:"vertical"
+                    size_hint:1,.05
+                    Label:
+                        text:"Grupos"
+                        size_hint:1,.1
+                    BoxLayout:
+                        orientation:"horizontal"
+                        size_hint:1,.15
+                        spacing:10
+                        CheckBox:
+                            size_hint:.05,1
+                            on_active:root._groupbox_2_callback(self.active)
+                            id:check_grup_2
+                        Label:
+                            size_hint:.15,1
+                            text:"Todos"
+                        TextInput:
+                            size_hint:.8,1
+                            text:""
+                            hint_text:"Codigos dos Grupos"
+                            multiline: False
+                            disabled:root.ids.check_grup_2.active
+                            id:text_grup_2
+                Label:
+                    text:"Periodicidade"
+                    size_hint:1,.01
+                GridLayout:
+                    cols:4
+                    size_hint:1,.1
+                    spacing:10,10
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_2_1
+                        group:"check_time_2"
+                        on_active:root._deltatime_2_callback(0)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Mensal"
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_2_2
+                        group:"check_time_2"
+                        on_active:root._deltatime_2_callback(1)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Trimestral"
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_2_3
+                        group:"check_time_2"
+                        on_active:root._deltatime_2_callback(2)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Semestral"
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_2_4
+                        group:"check_time_2"
+                        on_active:root._deltatime_2_callback(3)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Anual"
             BoxLayout:
                 orientation: "vertical"
                 padding:0,10
@@ -584,9 +1030,31 @@
                     CheckBox:
                         size_hint: 1,.03
                         id:check_analysis_3
-                        #on_active:root._checkanalysis_callback(self.active)
-                    BoxLayout:
-                        size_hint:1,.35
+                        on_active:root._checkanalysis_3_callback(self.active)
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba:0.1,0.1,0.1,1
+                        Rectangle:
+                            pos:self.pos
+                            size:self.size
+                    size_hint: 1,.7
+                    do_scroll_x: False
+                    effect_cls:ScrollEffect
+                    id: text_scroll
+                    GridLayout:
+                        cols:1
+                        size_hint:1,None
+                        id:scroll_grid_3
+                        minimum_height:self.height
+                        top: self.height
+                        TextInput:
+                            size_hint:1,None
+                            height: max(self.minimum_height,text_scroll.height)
+                            background_color: (.1,.1,.1,1)
+                            cursor_color: (1,1,1,1)
+                            foreground_color:(1,1,1,1)
+                            selection_color:(1,1,1,1)
         BoxLayout:
             orientation:"horizontal"
             size_hint: 1,.1
