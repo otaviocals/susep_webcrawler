@@ -673,34 +673,10 @@ if(params_3[[1]]==TRUE)
         addWorksheet(workbook,"dem_cont_grupos")
         writeDataTable(workbook,"dem_cont_grupos",format(mov_grupos,decimal.mark=","))
 
-        write.csv2(mov_grupos,paste0("proc_data",slash,"dem_cont_ramos.csv"))
+        write.csv2(mov_ramos,paste0("proc_data",slash,"dem_cont_ramos.csv"))
         addWorksheet(workbook,"dem_cont_ramos")
         writeDataTable(workbook,"dem_cont_ramos",format(mov_ramos,decimal.mark=","))
 
     }
 
 saveWorkbook(workbook,paste0("SES-Susep-",Sys.Date(),".xlsx"),overwrite=TRUE)
-
-
-#nrow(seguros)
-#seguros[,5:ncol(seguros)]
-#seguros[,5:ncol(seguros)]<-as.numeric(sub(",",".",as.character(seguros[,5:ncol(seguros)]),fixed=TRUE))
-#seguros[,5:ncol(seguros)]
-#seguros<-aggregate(seguros[,5:ncol(seguros)],by=list(yearsec=paste0(format(as.Date(paste0(as.character(seguros$damesano),"01"),format="%Y%m%d"),"%Y"),"01"),coenti=seguros$coenti,coramo=seguros$coramo,cogrupo=seguros$cogrupo),FUN=sum,na.rm=TRUE)
-#nrow(seguros)
-#format(seguros,decimal.mark=",")
-#head(seguros)
-#as.numeric(format(as.Date(paste0(as.character(seguros$damesano),"01"),format="%Y%m%d"),"%m"))
-#test
-#cmpid_filter
-#labels_filter
-#head(mov_grupos)
-#head(mov_ramos)
-#mov_grupos$COENTI
-#params_2[[7]]
-#params_3
-#head(campos)
-#head(normalized)
-#head(normalized_ascii)
-#stri_trans_list()
-#head(campos_filter)
