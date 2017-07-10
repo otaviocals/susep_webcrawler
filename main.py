@@ -38,6 +38,7 @@ from pylibs.file import XFolder
 from pylibs.xpopup import XPopup
 import pylibs.tools
 from time import sleep
+from unidecode import unidecode
 from webscraper.webscraper import Webscraper
 import time
 import datetime
@@ -131,6 +132,7 @@ deltatime_2=[True,False,False,False]
 #3rd Analysis startup
 
 analysis_3_check = [True]
+text_input_3 = ""
 
 #Loading saved configurations
 
@@ -205,6 +207,12 @@ if(Path(config_path).is_file()):
     #3rd Analysis Config Read
         analysis_3_check_string = configs[16][1:len(configs[16])-1]
         analysis_3_check[0]=(analysis_3_check_string == "True")
+        text_input_3_array = ""
+        for i in range(17,len(configs)):
+            if i>17:
+                text_input_3_array += "\n"
+            text_input_3_array += configs[i]
+        text_input_3 = text_input_3_array
 
 else:
     with open(config_path,"a") as f:
@@ -227,6 +235,7 @@ else:
 
         f.write("Config Analysis 3\n")
         f.write(str(analysis_3_check)+"\n")
+        f.write(str(text_input_3))
 
 #1st Analysis temp values
 new_analysis_check = analysis_check[:]
@@ -247,7 +256,7 @@ new_deltatime_2=deltatime_2[:]
 
 #3rd Analysis temp values
 new_analysis_3_check = analysis_3_check[:]
-
+new_text_input_3 = text_input_3[:]
 
 #Building GUI
 
@@ -408,6 +417,8 @@ class AppScreen(GridLayout):
 
         global analysis_3_check
         global new_analysis_3_check
+        global text_input_3
+        global new_text_input_3
 
         #Initiating Analysis 1 values
 
@@ -431,6 +442,7 @@ class AppScreen(GridLayout):
         #Initiating Analysis 3 values
 
         new_analysis_3_check = analysis_3_check[:]
+        new_text_input_3 = text_input_3[:]
 
         #Setting Popup Values
 
@@ -465,6 +477,7 @@ class AppScreen(GridLayout):
         popup.ids.check_time_2_4.active=new_deltatime_2[3]
 
         popup.ids.check_analysis_3.active=new_analysis_3_check[0]
+        popup.ids.text_input_3.text = new_text_input_3
 
         popup.open()
 
@@ -638,6 +651,8 @@ class CheckPopup(XPopup):
 
         global analysis_3_check
         global new_analysis_3_check
+        global text_input_3
+        global new_text_input_3
 
         if value:
 
@@ -672,6 +687,9 @@ class CheckPopup(XPopup):
             #Analysis 3 save
 
             analysis_3_check = new_analysis_3_check[:]
+            text_input_3 = unidecode(self.ids.text_input_3.text)
+            self.ids.text_input_3.text = text_input_3
+            lines_to_write = text_input_3.split("\n")
 
             #Saving file
             with open(config_path,"r") as f:
@@ -696,6 +714,13 @@ class CheckPopup(XPopup):
 
                 #Analysis 3
                 filelines[16]=str(analysis_3_check)+"\n"
+                for i in range(0,len(lines_to_write)):
+                    if 17+i<=len(filelines)-1:
+                        filelines[17+i]=lines_to_write[i]+"\n"
+                    else:
+                        filelines.append(lines_to_write[i]+"\n")
+                filelines = filelines[0:len(lines_to_write)+17]
+
 
                 f.writelines(filelines)
             self.dismiss()
@@ -719,6 +744,7 @@ class CheckPopup(XPopup):
 
             #Analysis 3 dismiss
             new_analysis_3_check = analysis_3_check[:]
+            new_text_input_3 = text_input_3[:]
 
             self.dismiss()
     pass
@@ -742,5 +768,4 @@ class SUSEP(App):
 ######################
 
 if __name__ == "__main__" :
-	print("hehe")
 	SUSEP().run()
