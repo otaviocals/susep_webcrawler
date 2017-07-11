@@ -37,7 +37,6 @@ from kivy.lang import Builder
 from pylibs.file import XFolder
 from pylibs.xpopup import XPopup
 import pylibs.tools
-import pylibs.win32timezone
 from time import sleep
 from unidecode import unidecode
 from webscraper.webscraper import Webscraper
@@ -47,6 +46,7 @@ import gc
 import sys
 import os
 import shutil
+import webbrowser
 
 ######################
 #    Pre-Settings    #
@@ -80,6 +80,7 @@ if current_os.startswith("linux"):
 elif current_os.startswith("win32") or current_os.startswith("cygwin"):
     slash = "\\"
     phantom = "phantomjs\\phantomjs.exe"
+    import pylibs.win32timezone
 elif current_os.startswith("darwin"):
     slash = "/"
     phantom = "phantomjs/phantomjs"
@@ -362,6 +363,9 @@ class AppScreen(GridLayout):
 
     def update_button(self,event):
         self.ToggleButton.text="Stop"
+
+    def _open_link(self):
+        webbrowser.open("http://www.calsemporium.com")
 
 #Directory selection
 
