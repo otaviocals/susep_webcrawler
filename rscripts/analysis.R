@@ -172,7 +172,7 @@ if(params_1[[1]]==TRUE)
     #Aggreggating by time interval
         
         #Aggregate by Year/Month
-        if(params_1[[6]][1] == TRUE)
+        if(params_1[[6]][1] == TRUE && nrow(seguros) > 0)
             {
                 seguros<-aggregate(seguros[,5:ncol(seguros)],
                                    by=list(
@@ -202,7 +202,7 @@ if(params_1[[1]]==TRUE)
                                            ),FUN=sum,na.rm=TRUE)
             }
         #Aggregate by Year/Trimester
-        else if(params_1[[6]][2] == TRUE)
+        else if(params_1[[6]][2] == TRUE && nrow(seguros) > 0)
             {
                 seguros<-aggregate(seguros[,5:ncol(seguros)],
                                    by=list(
@@ -232,7 +232,7 @@ if(params_1[[1]]==TRUE)
                                            ),FUN=sum,na.rm=TRUE)
             }
         #Aggregate by Year/Semester
-        else if(params_1[[6]][3] == TRUE)
+        else if(params_1[[6]][3] == TRUE && nrow(seguros) > 0)
             {
                 seguros<-aggregate(seguros[,5:ncol(seguros)],
                                    by=list(
@@ -262,7 +262,7 @@ if(params_1[[1]]==TRUE)
                                            ),FUN=sum,na.rm=TRUE)
             }
         #Aggregate by Year
-        else if(params_1[[6]][4] == TRUE)
+        else if(params_1[[6]][4] == TRUE && nrow(seguros) > 0)
             {
                 seguros<-aggregate(seguros[,5:ncol(seguros)],
                                    by=list(
@@ -375,262 +375,286 @@ if(params_2[[1]]==TRUE)
         #Aggregate by Year/Month
         if(params_2[[7]][1] == TRUE)
             {
-                mov_grupos<-aggregate(mov_grupos[,5],
-                                   by=list(
-                                           YEARSEC=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_grupos$DAMESANO)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/1
-                    )
-                    )
-                    )
-                                            ),
-                                           COENTI=mov_grupos$COENTI,
-                                           CMPID=mov_grupos$CMPID,
-                                           GRACODIGO=mov_grupos$GRACODIGO
-                                           ),FUN=sum,na.rm=TRUE)
+				if(nrow(mov_grupos) > 0)
+					{
+						mov_grupos<-aggregate(mov_grupos[,5],
+										by=list(
+												YEARSEC=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_grupos$DAMESANO)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/1
+							)
+							)
+							)
+													),
+												COENTI=mov_grupos$COENTI,
+												CMPID=mov_grupos$CMPID,
+												GRACODIGO=mov_grupos$GRACODIGO
+												),FUN=sum,na.rm=TRUE)
 
-                colnames(mov_grupos)[5]<-"VALOR"
-
-                mov_ramos<-aggregate(mov_ramos[,6],
-                                   by=list(
-                                           yearsec=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_ramos$damesano)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/1
-                    )
-                    )
-                    )
-                                            ),
-                                           coenti=mov_ramos$coenti,
-                                           cmpid=mov_ramos$cmpid,
-                                           ramcodigo=mov_ramos$ramcodigo,
-                                           gracodigo=mov_ramos$gracodigo,
-                                           seq=mov_ramos$seq,
-                                           quadro=mov_ramos$quadro
-                                           ),FUN=sum,na.rm=TRUE)
-
-                colnames(mov_ramos)[8]<-"valor"
-                mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+						colnames(mov_grupos)[5]<-"VALOR"
+					}
+					
+				if(nrow(mov_ramos) > 0)
+					{
+						mov_ramos<-aggregate(mov_ramos[,6],
+										by=list(
+												yearsec=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_ramos$damesano)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/1
+							)
+							)
+							)
+													),
+												coenti=mov_ramos$coenti,
+												cmpid=mov_ramos$cmpid,
+												ramcodigo=mov_ramos$ramcodigo,
+												gracodigo=mov_ramos$gracodigo,
+												seq=mov_ramos$seq,
+												quadro=mov_ramos$quadro
+												),FUN=sum,na.rm=TRUE)
+		
+						colnames(mov_ramos)[8]<-"valor"
+						mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+					}
             }
         #Aggregate by Year/Trimester
         else if(params_2[[7]][2] == TRUE)
             {
-                mov_grupos<-aggregate(mov_grupos[,5],
-                                   by=list(
-                                           YEARSEC=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_grupos$DAMESANO)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/3
-                    )
-                    )
-                    )
-                                            ),
-                                           COENTI=mov_grupos$COENTI,
-                                           CMPID=mov_grupos$CMPID,
-                                           GRACODIGO=mov_grupos$GRACODIGO
-                                           ),FUN=sum,na.rm=TRUE)
+                if(nrow(mov_grupos) > 0)
+					{
+						mov_grupos<-aggregate(mov_grupos[,5],
+										by=list(
+												YEARSEC=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_grupos$DAMESANO)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/3
+							)
+							)
+							)
+													),
+												COENTI=mov_grupos$COENTI,
+												CMPID=mov_grupos$CMPID,
+												GRACODIGO=mov_grupos$GRACODIGO
+												),FUN=sum,na.rm=TRUE)
 
-                colnames(mov_grupos)[5]<-"VALOR"
-
-                mov_ramos<-aggregate(mov_ramos[,6],
-                                   by=list(
-                                           yearsec=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_ramos$damesano)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/3
-                    )
-                    )
-                    )
-                                            ),
-                                           coenti=mov_ramos$coenti,
-                                           cmpid=mov_ramos$cmpid,
-                                           ramcodigo=mov_ramos$ramcodigo,
-                                           gracodigo=mov_ramos$gracodigo,
-                                           seq=mov_ramos$seq,
-                                           quadro=mov_ramos$quadro
-                                           ),FUN=sum,na.rm=TRUE)
-
-                colnames(mov_ramos)[8]<-"valor"
-                mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+						colnames(mov_grupos)[5]<-"VALOR"
+					}
+					
+				if(nrow(mov_ramos) > 0)
+					{
+						mov_ramos<-aggregate(mov_ramos[,6],
+										by=list(
+												yearsec=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_ramos$damesano)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/3
+							)
+							)
+							)
+													),
+												coenti=mov_ramos$coenti,
+												cmpid=mov_ramos$cmpid,
+												ramcodigo=mov_ramos$ramcodigo,
+												gracodigo=mov_ramos$gracodigo,
+												seq=mov_ramos$seq,
+												quadro=mov_ramos$quadro
+												),FUN=sum,na.rm=TRUE)
+		
+						colnames(mov_ramos)[8]<-"valor"
+						mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+					}
             }
         #Aggregate by Year/Semester
         else if(params_2[[7]][3] == TRUE)
             {
-                mov_grupos<-aggregate(mov_grupos[,5],
-                                   by=list(
-                                           YEARSEC=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_grupos$DAMESANO)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/6
-                    )
-                    )
-                    )
-                                            ),
-                                           COENTI=mov_grupos$COENTI,
-                                           CMPID=mov_grupos$CMPID,
-                                           GRACODIGO=mov_grupos$GRACODIGO
-                                           ),FUN=sum,na.rm=TRUE)
+                if(nrow(mov_grupos) > 0)
+					{
+						mov_grupos<-aggregate(mov_grupos[,5],
+										by=list(
+												YEARSEC=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_grupos$DAMESANO)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/6
+							)
+							)
+							)
+													),
+												COENTI=mov_grupos$COENTI,
+												CMPID=mov_grupos$CMPID,
+												GRACODIGO=mov_grupos$GRACODIGO
+												),FUN=sum,na.rm=TRUE)
 
-                colnames(mov_grupos)[5]<-"VALOR"
-
-                mov_ramos<-aggregate(mov_ramos[,6],
-                                   by=list(
-                                           yearsec=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_ramos$damesano)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/6
-                    )
-                    )
-                    )
-                                            ),
-                                           coenti=mov_ramos$coenti,
-                                           cmpid=mov_ramos$cmpid,
-                                           ramcodigo=mov_ramos$ramcodigo,
-                                           gracodigo=mov_ramos$gracodigo,
-                                           seq=mov_ramos$seq,
-                                           quadro=mov_ramos$quadro
-                                           ),FUN=sum,na.rm=TRUE)
-
-                colnames(mov_ramos)[8]<-"valor"
-                mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+						colnames(mov_grupos)[5]<-"VALOR"
+					}
+					
+				if(nrow(mov_ramos) > 0)
+					{
+						mov_ramos<-aggregate(mov_ramos[,6],
+										by=list(
+												yearsec=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_ramos$damesano)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/6
+							)
+							)
+							)
+													),
+												coenti=mov_ramos$coenti,
+												cmpid=mov_ramos$cmpid,
+												ramcodigo=mov_ramos$ramcodigo,
+												gracodigo=mov_ramos$gracodigo,
+												seq=mov_ramos$seq,
+												quadro=mov_ramos$quadro
+												),FUN=sum,na.rm=TRUE)
+		
+						colnames(mov_ramos)[8]<-"valor"
+						mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+					}
             }
         #Aggregate by Year
         else if(params_2[[7]][4] == TRUE)
             {
-                mov_grupos<-aggregate(mov_grupos[,5],
-                                   by=list(
-                                           YEARSEC=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_grupos$DAMESANO)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/12
-                    )
-                    )
-                    )
-                                            ),
-                                           COENTI=mov_grupos$COENTI,
-                                           CMPID=mov_grupos$CMPID,
-                                           GRACODIGO=mov_grupos$GRACODIGO
-                                           ),FUN=sum,na.rm=TRUE)
+                if(nrow(mov_grupos) > 0)
+					{
+						mov_grupos<-aggregate(mov_grupos[,5],
+										by=list(
+												YEARSEC=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_grupos$DAMESANO)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/12
+							)
+							)
+							)
+													),
+												COENTI=mov_grupos$COENTI,
+												CMPID=mov_grupos$CMPID,
+												GRACODIGO=mov_grupos$GRACODIGO
+												),FUN=sum,na.rm=TRUE)
 
-                colnames(mov_grupos)[5]<-"VALOR"
-
-                mov_ramos<-aggregate(mov_ramos[,6],
-                                   by=list(
-                                           yearsec=paste0(
-                #Year
-                format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
-                #Section
-                paste0("0",
-                as.character(
-                ceiling(
-                as.numeric(
-                format(
-                as.Date(
-                paste0(
-                as.character(mov_ramos$damesano)
-                    ,"01")
-                    ,format="%Y%m%d")
-                    ,"%m")
-                    )/12
-                    )
-                    )
-                    )
-                                            ),
-                                           coenti=mov_ramos$coenti,
-                                           cmpid=mov_ramos$cmpid,
-                                           ramcodigo=mov_ramos$ramcodigo,
-                                           gracodigo=mov_ramos$gracodigo,
-                                           seq=mov_ramos$seq,
-                                           quadro=mov_ramos$quadro
-                                           ),FUN=sum,na.rm=TRUE)
-
-                colnames(mov_ramos)[8]<-"valor"
-                mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+						colnames(mov_grupos)[5]<-"VALOR"
+					}
+					
+				if(nrow(mov_ramos) > 0)
+					{
+						mov_ramos<-aggregate(mov_ramos[,6],
+										by=list(
+												yearsec=paste0(
+						#Year
+						format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
+						#Section
+						paste0("0",
+						as.character(
+						ceiling(
+						as.numeric(
+						format(
+						as.Date(
+						paste0(
+						as.character(mov_ramos$damesano)
+							,"01")
+							,format="%Y%m%d")
+							,"%m")
+							)/12
+							)
+							)
+							)
+													),
+												coenti=mov_ramos$coenti,
+												cmpid=mov_ramos$cmpid,
+												ramcodigo=mov_ramos$ramcodigo,
+												gracodigo=mov_ramos$gracodigo,
+												seq=mov_ramos$seq,
+												quadro=mov_ramos$quadro
+												),FUN=sum,na.rm=TRUE)
+		
+						colnames(mov_ramos)[8]<-"valor"
+						mov_ramos <- mov_ramos[,c(1,2,3,4,5,8,6,7)]
+					}
             }
 
     #Writing file

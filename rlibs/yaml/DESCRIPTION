@@ -12,4 +12,5 @@ NeedsCompilation: yes
 Packaged: 2016-11-12 15:41:59 UTC; viking
 Repository: CRAN
 Date/Publication: 2016-11-12 19:55:17
-Built: R 3.4.1; x86_64-pc-linux-gnu; 2017-07-06 07:49:43 UTC; unix
+Built: R 3.4.1; x86_64-w64-mingw32; 2017-07-06 22:53:47 UTC; windows
+Archs: i386, x64

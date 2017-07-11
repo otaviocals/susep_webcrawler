@@ -37,6 +37,7 @@ from kivy.lang import Builder
 from pylibs.file import XFolder
 from pylibs.xpopup import XPopup
 import pylibs.tools
+import pylibs.win32timezone
 from time import sleep
 from unidecode import unidecode
 from webscraper.webscraper import Webscraper
@@ -53,7 +54,7 @@ import shutil
 
 #Setting configurations
 
-Config.set("kivy","log_enable","1")
+Config.set("kivy","log_enable","0")
 Config.set("kivy","log_level","critical")
 Config.set("graphics","position","custom")
 Config.set("graphics","top","10")
@@ -760,7 +761,7 @@ class SUSEP(App):
         self.icon = logo_path
         self.resizable = 0
         self.title = "Webscraper SUSEP"
-        self.log_enable = 1
+        self.log_enable = 0
         return AppScreen()
 
 ######################
