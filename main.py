@@ -1,14 +1,15 @@
-#                                                                                                       #
-#   Just Another Webscraper (J.A.W.)                                                                    #
-#                                    v0.1                                                               #
-#                                                                                                       #
-#       written by Otavio Cals                                                                          #
-#                                                                                                       #
-#   Description: A webscrapper for downloading tables and exporting them to .csv files autonomously.    #
-#                                                                                                       #
-#########################################################################################################
-
-#Required External Modules: cython, pygame, kivy
+#########################################
+#                                       #
+#          SUSEP-Webscraper             #
+#                v0.1                   #
+#                                       #
+#       written by Otavio Cals          #
+#                                       #
+#    Description: A webscrapper for     #
+#    downloading tables and exporting   #
+#    them to .csv files autonomously.   #
+#                                       #
+#########################################
 
 from kivy.app import App
 from kivy.uix.label import Label
@@ -57,7 +58,7 @@ import webbrowser
 Config.set("kivy","log_enable","0")
 Config.set("kivy","log_level","critical")
 Config.set("graphics","position","custom")
-Config.set("graphics","top","10")
+Config.set("graphics","top","50")
 Config.set("graphics","left","10")
 Config.set("graphics","width","450")
 Config.set("graphics","height","900")
@@ -103,7 +104,6 @@ r_libs_path = resource_path("rlibs")
 kivi_app_path = resource_path("kivylibs"+slash+"app_screen.kv")
 config_path = os.path.abspath(".")+slash+"config.txt"
 
-#print(os.path.abspath("."))
 
 
 #######################
@@ -282,6 +282,8 @@ class AppScreen(GridLayout):
             makedirs(sel_folder+slash+"logs")
         if(not isdir(sel_folder+slash+"proc_data")):
             makedirs(sel_folder+slash+"proc_data")
+        if(not isdir(sel_folder+slash+"proc_data"+slash+"plots")):
+            makedirs(sel_folder+slash+"proc_data"+slash+"plots")
         log_file = open((sel_folder+slash+"logs"+slash+"history.log"),"a",encoding="utf-8")
 
     #Starting scrap

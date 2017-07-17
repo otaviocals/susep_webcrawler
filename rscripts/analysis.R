@@ -14,15 +14,19 @@ setwd(data_folder)
 
 #Loading libraries
 
-package_list <- c("Rcpp","openxlsx","stringi")
-	for( i in 1:length(package_list))
+package_list <- c("Rcpp","openxlsx","stringi",
+                  "labeling","ggplot2","digest",
+                  "reshape2","stringr","grid","gridExtra")
+	suppressWarnings(suppressMessages(
+    for( i in 1:length(package_list))
 	{
 		if (!require(package_list[i],character.only = TRUE,lib.loc=r_libs))
     			{
 		      	install.packages(package_list[i],dep=TRUE,repos="http://cran.us.r-project.org",lib=r_libs)
 			        if(!require(package_list[i],character.only = TRUE,lib.loc=r_libs)) stop("Package not found")
 			}
-	}
+	}))
+
 
 
 #########################
@@ -180,7 +184,7 @@ if(params_1[[1]]==TRUE)
                 #Year
                 format(as.Date(paste0(as.character(seguros$damesano),"01"),format="%Y%m%d"),"%Y"),
                 #Section
-                paste0("0",
+                str_pad(
                 as.character(
                 ceiling(
                 as.numeric(
@@ -194,7 +198,7 @@ if(params_1[[1]]==TRUE)
                     )/1
                     )
                     )
-                    )
+                    ,2,pad="0")
                                             ),
                                            coenti=seguros$coenti,
                                            coramo=seguros$coramo,
@@ -277,11 +281,204 @@ if(params_1[[1]]==TRUE)
                                            ),FUN=sum,na.rm=TRUE)
             }
 
-    #Writing file
+    #Post-processing & Writing file
+        seguros <- aggregate(seguros[,5:ncol(seguros)],
+                             by=list(
+                                     yearsec=seguros$yearsec,
+                                     coenti=seguros$coenti
+                                     )
+                             ,FUN=sum,na.rm=TRUE)
+
 
         write.csv2(seguros,paste0("proc_data",slash,"premios_sinistros_seg.csv"))
         addWorksheet(workbook,"premios_sinistros_seg")
-        writeDataTable(workbook,"premios_sinistros_seg",format(seguros,decimal.mark=","))
+
+    #Merging All Companies
+        if(params_1[[4]][1]=="TRUE")
+            {
+                seguros <- aggregate(seguros[,3:ncol(seguros)],
+                                     by=list(yearsec=seguros$yearsec)
+                                     ,FUN=sum,na.rm=TRUE)
+                if(!params_1[[6]][1])
+                    {
+                        seguros <- seguros[1:(nrow(seguros)-1),]
+                    }
+
+                insert_line <- 1
+                writeData(workbook,
+                          "premios_sinistros_seg",
+                          "Todas as Empresas",
+                          startRow=insert_line)
+
+
+                insert_line <- insert_line+1
+
+                writeDataTable(workbook,
+                               "premios_sinistros_seg",
+                               format(seguros,decimal.mark=","),
+                               startRow=insert_line)
+
+                insert_line <- insert_line+nrow(seguros)+1
+
+                writeData(workbook,
+                          "premios_sinistros_seg",
+                          "Ver Tabela 1",
+                          startRow=insert_line)
+                insert_line <- insert_line + 2
+
+            #Removing old files
+                file.remove(list.files(path=paste0("proc_data",slash,"plots"),
+                                 pattern="^premios_sinistros_seg_",
+                                 full.names=TRUE))
+            #Plotting data
+                plot_data <- melt(seguros,id="yearsec")
+                period <- c("Mensal",
+                                   "Trimestral",
+                                   "Semestral",
+                                   "Anual")[params_1[[6]]]
+
+                p1 <- ggplot(data=plot_data,
+                             aes(x=yearsec,y=value,colour=variable,group=variable))+
+                                geom_line()+
+                                geom_point()+
+                                facet_wrap(~variable, scales="free_y")+
+                                ggtitle(paste0(
+                                    "Tabela 1: Todas as Empresas\nPeriodicidade ",
+                                    period,
+                                    " \nDe ",
+                                    seguros[1,1],
+                                    " a ",
+                                    seguros[nrow(seguros),1])
+                                )+
+                                ylab("Valor")+
+                                xlab("Periodo")
+                ggsave("premios_sinistros_seg_total.jpeg",
+                       plot=p1,
+                       path=paste0("proc_data",slash,"plots"),
+                       width=28,
+                       height=14,
+                       units="cm"
+                       )
+                insertImage(workbook,
+                            "premios_sinistros_seg",
+                            paste0("proc_data",slash,"plots",slash,"premios_sinistros_seg_total.jpeg"),
+                            width=28,
+                            height=14,
+                            units="cm",
+                            startRow=insert_line
+                            )
+
+            }
+    #Plotting selected companies
+        else
+            {
+                insert_line<- 1
+                coenti_1 <- as.numeric(strsplit(params_1[[4]][2],",")[[1]])
+
+            #Getting companies names
+                cias <- read.csv2(paste0("data",slash,"Ses_cias.csv"),
+                                  encoding="latin1")
+            #Removing old data
+                file.remove(list.files(path=paste0("proc_data",slash,"plots"),
+                                    pattern="^premios_sinistros_seg_",
+                                    full.names=TRUE))
+
+            #Making plots
+                plots<- list()
+
+                for(j in 1:length(coenti_1))
+                    {
+                        seguros_sub <- seguros[seguros$coenti==coenti_1[j],-2]
+                        if(!params_1[[6]][1])
+                            {
+                                seguros_sub <- seguros_sub[1:(nrow(seguros_sub)-1),]
+                            }
+
+                        cia <- as.character(cias[cias$Coenti==coenti_1[j],2])
+                        cia <- stri_trans_general(cia,"Latin-ASCII")
+                        writeData(workbook,
+                                  "premios_sinistros_seg",
+                                  cia,
+                                  startRow=insert_line)
+                        insert_line <- insert_line+1
+
+                        writeDataTable(workbook,
+                                       "premios_sinistros_seg",
+                                       format(seguros_sub,decimal.mark=","),
+                                       startRow=insert_line)
+                        insert_line <- insert_line + nrow(seguros_sub) +1
+
+                        writeData(workbook,
+                                  "premios_sinistros_seg",
+                                  paste0("Ver Tabela ",j),
+                                  startRow=insert_line)
+                        insert_line <- insert_line + 2
+
+                        plot_data <- melt(seguros_sub,id="yearsec")
+                        period <- c("Mensal",
+                                           "Trimestral",
+                                           "Semestral",
+                                           "Anual")[params_1[[6]]]
+
+                        p1 <- ggplot(data=plot_data,
+                                     aes(x=yearsec,
+                                         y=value,
+                                         colour=variable,
+                                         group=variable))+
+                                        geom_line()+
+                                        geom_point()+
+                                        facet_wrap(~variable, scales="free_y")+
+                                        ggtitle(paste0(
+                                            "Tabela ",
+                                            j,
+                                            ": ",
+                                            cia,
+                                            "\nPeriodicidade ",
+                                            period,
+                                            " \nDe ",
+                                            seguros_sub[1,1],
+                                            " a ",
+                                            seguros_sub[nrow(seguros_sub),1])
+                                        )+
+                                        ylab("Valor")+
+                                        xlab("Periodo")
+                        ggsave(paste0("premios_sinistros_seg_",j,".jpeg"),
+                               plot=p1,
+                               path=paste0("proc_data",slash,"plots"),
+                               width=28,
+                               height=14,
+                               units="cm"
+                               )
+
+                        plots[[j]]<- p1
+
+                    }
+
+            #Merging plots and printing
+                plot_total <- arrangeGrob(grobs=plots,ncol=1)
+                ggsave("premios_sinistros_seg_total.jpeg",
+                       plot=plot_total,
+                       path=paste0("proc_data",slash,"plots"),
+                       width=28,
+                       height=14*length(plots),
+                       units="cm"
+                       )
+
+                insertImage(workbook,
+                            "premios_sinistros_seg",
+                            paste0("proc_data",
+                                   slash,
+                                   "plots",
+                                   slash,
+                                   "premios_sinistros_seg_total.jpeg"
+                                   ),
+                            width=28,
+                            height=14*length(plots),
+                            units="cm",
+                            startRow=insert_line
+                            )
+            }
+
     }
 
 ####################
@@ -383,7 +580,7 @@ if(params_2[[1]]==TRUE)
 						#Year
 						format(as.Date(paste0(as.character(mov_grupos$DAMESANO),"01"),format="%Y%m%d"),"%Y"),
 						#Section
-						paste0("0",
+                        str_pad(
 						as.character(
 						ceiling(
 						as.numeric(
@@ -397,7 +594,7 @@ if(params_2[[1]]==TRUE)
 							)/1
 							)
 							)
-							)
+                            ,2,pad="0")
 													),
 												COENTI=mov_grupos$COENTI,
 												CMPID=mov_grupos$CMPID,
@@ -415,7 +612,7 @@ if(params_2[[1]]==TRUE)
 						#Year
 						format(as.Date(paste0(as.character(mov_ramos$damesano),"01"),format="%Y%m%d"),"%Y"),
 						#Section
-						paste0("0",
+                        str_pad(
 						as.character(
 						ceiling(
 						as.numeric(
@@ -429,7 +626,7 @@ if(params_2[[1]]==TRUE)
 							)/1
 							)
 							)
-							)
+                            ,2,pad="0")
 													),
 												coenti=mov_ramos$coenti,
 												cmpid=mov_ramos$cmpid,
