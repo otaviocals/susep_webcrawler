@@ -305,6 +305,8 @@ if(params_1[[1]]==TRUE)
                     }
 
                 insert_line <- 1
+                numCol <- ceiling((ncol(seguros)-1)/3)
+
                 writeData(workbook,
                           "premios_sinistros_seg",
                           "Todas as Empresas",
@@ -313,12 +315,19 @@ if(params_1[[1]]==TRUE)
 
                 insert_line <- insert_line+1
 
+                seguros_t <- seguros[,-1]
+                rownames(seguros_t) <- seguros[,1]
+                seguros_t <- as.data.frame(t(seguros_t))
+
                 writeDataTable(workbook,
                                "premios_sinistros_seg",
-                               format(seguros,decimal.mark=","),
+                               format(
+                                seguros_t,
+                                decimal.mark=","),
+                               rowNames=TRUE,
                                startRow=insert_line)
 
-                insert_line <- insert_line+nrow(seguros)+1
+                insert_line <- insert_line+nrow(seguros_t)+1
 
                 writeData(workbook,
                           "premios_sinistros_seg",
@@ -337,11 +346,37 @@ if(params_1[[1]]==TRUE)
                                    "Semestral",
                                    "Anual")[params_1[[6]]]
 
+                x_index <- rep(F,nrow(seguros))
+                x_length <- length(x_index)
+                if(ceiling(x_length/3)!=x_length/3)
+                    {
+                        first_third <- ceiling(x_length/3)
+                    }
+                else
+                    {
+                        first_third <- (x_length/3)+1
+                    }
+                if(floor(x_length*2/3)!=x_length*2/3)
+                    {
+                        second_third <- floor(x_length*2/3)+1
+                    }
+                else
+                    {
+                        second_third <- x_length*2/3
+                    }
+                x_index[c(1,
+                        first_third,
+                        second_third,
+                        length(x_index))
+                        ]<-T
+
                 p1 <- ggplot(data=plot_data,
                              aes(x=yearsec,y=value,colour=variable,group=variable))+
                                 geom_line()+
-                                geom_point()+
-                                facet_wrap(~variable, scales="free_y")+
+                                scale_x_discrete(
+                                    breaks=plot_data$yearsec[x_index]
+                                    )+
+                                facet_wrap(~variable, scales="free_y",ncol=3)+
                                 ggtitle(paste0(
                                     "Tabela 1: Todas as Empresas\nPeriodicidade ",
                                     period,
@@ -352,23 +387,33 @@ if(params_1[[1]]==TRUE)
                                 )+
                                 ylab("Valor")+
                                 xlab("Periodo")
+                if(nrow(seguros)<15)
+                    {
+                        p1 <- p1 + geom_point()
+                    }
                 ggsave("premios_sinistros_seg_total.jpeg",
                        plot=p1,
                        path=paste0("proc_data",slash,"plots"),
                        width=28,
-                       height=14,
+                       height=5*numCol,
                        units="cm"
                        )
                 insertImage(workbook,
                             "premios_sinistros_seg",
-                            paste0("proc_data",slash,"plots",slash,"premios_sinistros_seg_total.jpeg"),
+                            paste0("proc_data",
+                                   slash,
+                                   "plots",
+                                   slash,
+                                   "premios_sinistros_seg_total.jpeg"),
                             width=28,
-                            height=14,
+                            height=5*numCol,
                             units="cm",
                             startRow=insert_line
                             )
 
             }
+
+
     #Plotting selected companies
         else
             {
@@ -385,6 +430,7 @@ if(params_1[[1]]==TRUE)
 
             #Making plots
                 plots<- list()
+                numCol <- ceiling((ncol(seguros)-1)/3)
 
                 for(j in 1:length(coenti_1))
                     {
@@ -402,11 +448,17 @@ if(params_1[[1]]==TRUE)
                                   startRow=insert_line)
                         insert_line <- insert_line+1
 
+                        seguros_sub_t <- seguros_sub[,-1]
+                        rownames(seguros_sub_t) <- seguros_sub[,1]
+                        seguros_sub_t <- as.data.frame(t(seguros_sub_t))
                         writeDataTable(workbook,
                                        "premios_sinistros_seg",
-                                       format(seguros_sub,decimal.mark=","),
+                                       format(
+                                        seguros_sub_t,
+                                        decimal.mark=","),
+                                       rowNames=TRUE,
                                        startRow=insert_line)
-                        insert_line <- insert_line + nrow(seguros_sub) +1
+                        insert_line <- insert_line + nrow(seguros_sub_t) +1
 
                         writeData(workbook,
                                   "premios_sinistros_seg",
@@ -420,14 +472,39 @@ if(params_1[[1]]==TRUE)
                                            "Semestral",
                                            "Anual")[params_1[[6]]]
 
+                        x_index <- rep(F,nrow(seguros_sub))
+                        x_length <- length(x_index)
+                        if(ceiling(x_length/3)!=x_length/3)
+                            {
+                                first_third <- ceiling(x_length/3)
+                            }
+                        else
+                            {
+                                first_third <- (x_length/3)+1
+                            }
+                        if(floor(x_length*2/3)!=x_length*2/3)
+                            {
+                                second_third <- floor(x_length*2/3)+1
+                            }
+                        else
+                            {
+                                second_third <- x_length*2/3
+                            }
+                        x_index[c(1,
+                                  first_third,
+                                  second_third,
+                                  length(x_index))
+                                ]<-T
                         p1 <- ggplot(data=plot_data,
                                      aes(x=yearsec,
                                          y=value,
                                          colour=variable,
                                          group=variable))+
-                                        geom_line()+
-                                        geom_point()+
-                                        facet_wrap(~variable, scales="free_y")+
+                                        geom_line()+                                
+                                        scale_x_discrete(
+                                            breaks=plot_data$yearsec[x_index]
+                                            )+
+                                        facet_wrap(~variable, scales="free_y",ncol=3)+
                                         ggtitle(paste0(
                                             "Tabela ",
                                             j,
@@ -442,11 +519,15 @@ if(params_1[[1]]==TRUE)
                                         )+
                                         ylab("Valor")+
                                         xlab("Periodo")
+                        if(nrow(seguros_sub)<15)
+                            {
+                                p1 <- p1 + geom_point()
+                            }
                         ggsave(paste0("premios_sinistros_seg_",j,".jpeg"),
                                plot=p1,
                                path=paste0("proc_data",slash,"plots"),
                                width=28,
-                               height=14,
+                               height=5*numCol,
                                units="cm"
                                )
 
@@ -460,7 +541,8 @@ if(params_1[[1]]==TRUE)
                        plot=plot_total,
                        path=paste0("proc_data",slash,"plots"),
                        width=28,
-                       height=14*length(plots),
+                       height=5*numCol*length(plots),
+                       limitsize=FALSE,
                        units="cm"
                        )
 
@@ -473,7 +555,7 @@ if(params_1[[1]]==TRUE)
                                    "premios_sinistros_seg_total.jpeg"
                                    ),
                             width=28,
-                            height=14*length(plots),
+                            height=5*numCol*length(plots),
                             units="cm",
                             startRow=insert_line
                             )
@@ -854,15 +936,67 @@ if(params_2[[1]]==TRUE)
 					}
             }
 
-    #Writing file
-
+    #Post-Processing
+        mov_grupos <- aggregate(mov_grupos[,5],
+                                by=list(
+                                     yearsec=mov_grupos$YEARSEC,
+                                     coenti=mov_grupos$COENTI,
+                                     gracodigo=mov_grupos$GRACODIGO
+                                     )
+                             ,FUN=sum,na.rm=TRUE)
         write.csv2(mov_grupos,paste0("proc_data",slash,"resseg_grupos.csv"))
-        addWorksheet(workbook,"resseg_grupos")
-        writeDataTable(workbook,"resseg_grupos",format(mov_grupos,decimal.mark=","))
 
-        write.csv2(mov_grupos,paste0("proc_data",slash,"resseg_ramos.csv"))
+        mov_ramos <- aggregate(mov_ramos[,6],
+                                by=list(
+                                     yearsec=mov_ramos$yearsec,
+                                     coenti=mov_ramos$coenti,
+                                     ramcodigo=mov_ramos$ramcodigo,
+                                     gracodigo=mov_ramos$gracodigo
+                                     )
+                             ,FUN=sum,na.rm=TRUE)
+        write.csv2(mov_ramos,paste0("proc_data",slash,"resseg_ramos.csv"))
+
+        addWorksheet(workbook,"resseg_grupos")
         addWorksheet(workbook,"resseg_ramos")
-        writeDataTable(workbook,"resseg_ramos",format(mov_ramos,decimal.mark=","))
+
+
+    #Merging All Companies
+        if(params_2[[4]][1]=="FALSE")
+            {
+                writeDataTable(workbook,
+                               "resseg_grupos",
+                               format(
+                                mov_grupos,
+                                decimal.mark=",")
+                               )
+
+                writeDataTable(workbook,
+                               "resseg_ramos",
+                               format(
+                                mov_ramos,
+                                decimal.mark=",")
+                               )
+            }
+
+
+    #Plotting selected companies
+        else
+            {
+                writeDataTable(workbook,
+                               "resseg_grupos",
+                               format(
+                                mov_grupos,
+                                decimal.mark=",")
+                               )
+
+                writeDataTable(workbook,
+                               "resseg_ramos",
+                               format(
+                                mov_ramos,
+                                decimal.mark=",")
+                               )
+            }
+
 
     }
 
