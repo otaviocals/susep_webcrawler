@@ -2,5 +2,6 @@ data_tables/
 build/
 dist/
 __pycache__/
+rlibs/**
 ghostdriver.log
 config.txt

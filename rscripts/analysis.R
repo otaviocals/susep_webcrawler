@@ -315,6 +315,7 @@ if(params_1[[1]]==TRUE)
 
                 insert_line <- insert_line+1
 
+            #Transposing Data
                 seguros_t <- seguros[,-1]
                 rownames(seguros_t) <- seguros[,1]
                 seguros_t <- as.data.frame(t(seguros_t))
@@ -1016,45 +1017,522 @@ if(params_2[[1]]==TRUE)
                           startRow=insert_line)
 
                 insert_line <- insert_line + 1
+                numCol_grupos <- ceiling((ncol(mov_grupos)-1)/3)
+                numCol_ramos <- ceiling((ncol(mov_ramos)-1)/3)
 
-                #Transpose Data Frame
+            #Transpose Data Frame
+                mov_grupos_t <- mov_grupos[,-1]
+                mov_ramos_t <- mov_ramos[,-1]
+                rownames(mov_grupos_t) <- mov_grupos[,1]
+                rownames(mov_ramos_t) <- mov_ramos[,1]
+                mov_grupos_t <- as.data.frame(t(mov_grupos_t))
+                mov_ramos_t <- as.data.frame(t(mov_ramos_t))
 
                 writeDataTable(workbook,
                                "resseg_grupos",
                                format(
-                                mov_grupos,
+                                mov_grupos_t,
                                 decimal.mark=","),
+                               rowNames=TRUE,
                                startRow=insert_line
                                )
 
                 writeDataTable(workbook,
                                "resseg_ramos",
                                format(
-                                mov_ramos,
+                                mov_ramos_t,
                                 decimal.mark=","),
+                               rowNames=TRUE,
                                startRow=insert_line
                                )
 
-                #Plot Data
+                insert_line_grupos <- insert_line+nrow(mov_grupos_t)+1
+                insert_line_ramos <- insert_line+nrow(mov_ramos_t)+1
+
+                writeData(workbook,
+                          "resseg_grupos",
+                          "Ver Tabela 1",
+                          startRow=insert_line_grupos)
+                writeData(workbook,
+                          "resseg_ramos",
+                          "Ver Tabela 1",
+                          startRow=insert_line_ramos)
+
+                insert_line_grupos <- insert_line_grupos + 2
+                insert_line_ramos <- insert_line_ramos + 2
+
+            #Removing old files
+                file.remove(list.files(path=paste0("proc_data",slash,"plots"),
+                                 pattern="^resseg_grupos_",
+                                 full.names=TRUE))
+                file.remove(list.files(path=paste0("proc_data",slash,"plots"),
+                                 pattern="^resseg_ramos_",
+                                 full.names=TRUE))
+            #Plotting data
+                period <- c("Mensal",
+                                   "Trimestral",
+                                   "Semestral",
+                                   "Anual")[params_2[[7]]]
+
+                plot_data_grupos <- melt(mov_grupos,id="yearsec")
+                plot_data_ramos <- melt(mov_ramos,id="yearsec")
+
+                #Plot Indexes
+                x_index_grupos <- rep(F,nrow(mov_grupos))
+                x_length_grupos <- length(x_index_grupos)
+
+                x_index_ramos <- rep(F,nrow(mov_ramos))
+                x_length_ramos <- length(x_index_ramos)
+
+                if(ceiling(x_length_grupos/3)!=x_length_grupos/3)
+                    {
+                        first_third_grupos <- ceiling(x_length_grupos/3)
+                        second_third_grupos <- floor(x_length_grupos*2/3)+1
+                    }
+                else
+                    {
+                        first_third_grupos <- (x_length_grupos/3)+1
+                        second_third_grupos <- x_length_grupos*2/3
+                    }
+
+                if(ceiling(x_length_ramos/3)!=x_length_ramos/3)
+                    {
+                        first_third_ramos <- ceiling(x_length_ramos/3)
+                        second_third_ramos <- floor(x_length_ramos*2/3)+1
+                    }
+                else
+                    {
+                        first_third_ramos <- (x_length_ramos/3)+1
+                        second_third_ramos <- x_length_ramos*2/3
+                    }
+
+                x_index_grupos[c(1,
+                        first_third_grupos,
+                        second_third_grupos,
+                        length(x_index_grupos))
+                        ]<-T
+
+                x_index_ramos[c(1,
+                        first_third_ramos,
+                        second_third_ramos,
+                        length(x_index_ramos))
+                        ]<-T
+
+                p1_grupos <- ggplot(data=plot_data_grupos,
+                             aes(x=yearsec,y=value,colour=variable,group=variable))+
+                                geom_line()+
+                                scale_x_discrete(
+                                    breaks=plot_data_grupos$yearsec[x_index_grupos]
+                                    )+
+                                facet_wrap(~variable, scales="free_y",ncol=3)+
+                                ggtitle(paste0(
+                                    "Tabela 1: Todas as Empresas\nPeriodicidade ",
+                                    period,
+                                    " \nDe ",
+                                    mov_grupos[1,1],
+                                    " a ",
+                                    mov_grupos[nrow(mov_grupos),1])
+                                )+
+                                ylab("Valor")+
+                                xlab("Periodo")
+                if(nrow(mov_grupos)<15)
+                    {
+                        p1_grupos <- p1_grupos + geom_point()
+                    }
+
+                p1_ramos <- ggplot(data=plot_data_ramos,
+                             aes(x=yearsec,y=value,colour=variable,group=variable))+
+                                geom_line()+
+                                scale_x_discrete(
+                                    breaks=plot_data_ramos$yearsec[x_index_ramos]
+                                    )+
+                                facet_wrap(~variable, scales="free_y",ncol=3)+
+                                ggtitle(paste0(
+                                    "Tabela 1: Todas as Empresas\nPeriodicidade ",
+                                    period,
+                                    " \nDe ",
+                                    mov_ramos[1,1],
+                                    " a ",
+                                    mov_ramos[nrow(mov_ramos),1])
+                                )+
+                                ylab("Valor")+
+                                xlab("Periodo")
+                if(nrow(mov_ramos)<15)
+                    {
+                        p1_ramos <- p1_ramos + geom_point()
+                    }
+
+                ggsave("resseg_grupos_total.jpeg",
+                       plot=p1_grupos,
+                       path=paste0("proc_data",slash,"plots"),
+                       width=28,
+                       height=5*numCol_grupos,
+                       units="cm"
+                       )
+                ggsave("resseg_ramos_total.jpeg",
+                       plot=p1_ramos,
+                       path=paste0("proc_data",slash,"plots"),
+                       width=28,
+                       height=5*numCol_ramos,
+                       units="cm"
+                       )
+
+                insertImage(workbook,
+                            "resseg_grupos",
+                            paste0("proc_data",
+                                   slash,
+                                   "plots",
+                                   slash,
+                                   "resseg_grupos_total.jpeg"),
+                            width=28,
+                            height=5*numCol_grupos,
+                            units="cm",
+                            startRow=insert_line_grupos
+                            )
+                insertImage(workbook,
+                            "resseg_ramos",
+                            paste0("proc_data",
+                                   slash,
+                                   "plots",
+                                   slash,
+                                   "resseg_ramos_total.jpeg"),
+                            width=28,
+                            height=5*numCol_ramos,
+                            units="cm",
+                            startRow=insert_line_ramos
+                            )
+
+
             }
 
 
     #Plotting selected companies
         else
             {
-                writeDataTable(workbook,
-                               "resseg_grupos",
-                               format(
-                                mov_grupos,
-                                decimal.mark=",")
+                insert_line_grupos <- 1
+                insert_line_ramos <- 1
+                coenti_2 <- as.numeric(strsplit(params_2[[4]][2],",")[[1]])
+
+            #Getting companies names
+                cias <- read.csv2(paste0("data",slash,"Ses_cias.csv"),
+                                  encoding="latin1")
+            #Removing old data
+                file.remove(list.files(path=paste0("proc_data",slash,"plots"),
+                                 pattern="^resseg_grupos_",
+                                 full.names=TRUE))
+                file.remove(list.files(path=paste0("proc_data",slash,"plots"),
+                                 pattern="^resseg_ramos_",
+                                 full.names=TRUE))
+
+            #Making plots
+                plots_grupos<- list()
+                plots_ramos<- list()
+
+                tabela_grupos <- 1
+                tabela_ramos <- 1
+
+                for(j in 1:length(coenti_2))
+                    {
+                        mov_grupos_sub <- mov_grupos[
+                                        mov_grupos$coenti==coenti_2[j],-2]
+
+                        if(nrow(mov_grupos_sub)==0)
+                            {
+                                next
+                            }
+
+                        numCol_grupos <- ceiling((ncol(mov_grupos_sub)-1)/3)
+
+                        if(!params_2[[7]][1])
+                            {
+                                mov_grupos_sub <- mov_grupos_sub[1:
+                                            (nrow(mov_grupos_sub)-1),]
+                            }
+
+                        cia <- as.character(cias[cias$Coenti==coenti_2[j],2])
+                        cia <- stri_trans_general(cia,"Latin-ASCII")
+
+                        writeData(workbook,
+                                  "resseg_grupos",
+                                  cia,
+                                  startRow=insert_line_grupos)
+
+                        insert_line_grupos <- insert_line_grupos+1
+
+                    #Transpose Data Frame
+                        mov_grupos_sub_t <- mov_grupos_sub[,-1]
+                        rownames(mov_grupos_sub_t) <- mov_grupos_sub[,1]
+                        mov_grupos_sub_t <- as.data.frame(t(mov_grupos_sub_t))
+
+                        writeDataTable(workbook,
+                                       "resseg_grupos",
+                                       format(
+                                        mov_grupos_sub_t,
+                                        decimal.mark=","),
+                                       rowNames=TRUE,
+                                       startRow=insert_line_grupos
+                                       )
+
+                        insert_line_grupos <- insert_line_grupos +
+                                                nrow(mov_grupos_sub_t)+1
+
+                        writeData(workbook,
+                                  "resseg_grupos",
+                                  paste0("Ver tabela ",tabela_grupos),
+                                  startRow=insert_line_grupos)
+
+                        insert_line_grupos <- insert_line_grupos+2
+
+                    #Plotting data
+                        period <- c("Mensal",
+                                           "Trimestral",
+                                           "Semestral",
+                                           "Anual")[params_2[[7]]]
+
+                        plot_data_grupos <- melt(mov_grupos_sub,id="yearsec")
+
+                        #Plot Indexes
+                        x_index_grupos <- rep(F,nrow(mov_grupos_sub))
+                        x_length_grupos <- length(x_index_grupos)
+
+
+                        if(ceiling(x_length_grupos/3)!=x_length_grupos/3)
+                            {
+                                first_third_grupos <- ceiling(x_length_grupos/3)
+                                second_third_grupos <- floor(x_length_grupos*2/3)+1
+                            }
+                        else
+                            {
+                                first_third_grupos <- (x_length_grupos/3)+1
+                                second_third_grupos <- x_length_grupos*2/3
+                            }
+
+                        x_index_grupos[c(1,
+                                first_third_grupos,
+                                second_third_grupos,
+                                length(x_index_grupos))
+                                ]<-T
+
+                        p1_grupos <- ggplot(data=plot_data_grupos,
+                                     aes(x=yearsec,
+                                         y=value,
+                                         colour=variable,
+                                         group=variable))+
+                                        geom_line()+
+                                        scale_x_discrete(
+                                            breaks=plot_data_grupos$yearsec[
+                                                                x_index_grupos])+
+                                        facet_wrap(~variable, 
+                                                   scales="free_y",
+                                                   ncol=3)+
+                                        ggtitle(paste0(
+                                            "Tabela ",
+                                            tabela_grupos,
+                                            ": ",
+                                            cia,
+                                            " \nPeriodicidade ",
+                                            period,
+                                            " \nDe ",
+                                            mov_grupos_sub[1,1],
+                                            " a ",
+                                            mov_grupos_sub[nrow(mov_grupos_sub),1])
+                                        )+
+                                        ylab("Valor")+
+                                        xlab("Periodo")
+                        if(nrow(mov_grupos_sub)<15)
+                            {
+                                p1_grupos <- p1_grupos + geom_point()
+                            }
+
+                        ggsave(paste0("resseg_grupos_",tabela_grupos,".jpeg"),
+                               plot=p1_grupos,
+                               path=paste0("proc_data",slash,"plots"),
+                               width=28,
+                               height=5*numCol_grupos,
+                               units="cm"
                                )
 
-                writeDataTable(workbook,
-                               "resseg_ramos",
-                               format(
-                                mov_ramos,
-                                decimal.mark=",")
+                        plots_grupos[[tabela_grupos]]<- p1_grupos
+
+                        tabela_grupos <- tabela_grupos + 1
+
+                    }
+
+            #Merging plots and printing
+                plot_total_grupos <- arrangeGrob(grobs=plots_grupos,ncol=1)
+                ggsave("resseg_grupos_total.jpeg",
+                       plot=plot_total_grupos,
+                       path=paste0("proc_data",slash,"plots"),
+                       width=28,
+                       height=5*numCol_grupos*length(plots_grupos),
+                       limitsize=FALSE,
+                       units="cm"
+                       )
+
+                insertImage(workbook,
+                            "resseg_grupos",
+                            paste0("proc_data",
+                                   slash,
+                                   "plots",
+                                   slash,
+                                   "resseg_grupos_total.jpeg"
+                                   ),
+                            width=28,
+                            height=5*numCol_grupos*length(plots_grupos),
+                            units="cm",
+                            startRow=insert_line_grupos
+                            )
+
+                for(j in 1:length(coenti_2))
+                    {
+                        mov_ramos_sub <- mov_ramos[
+                                        mov_ramos$coenti==coenti_2[j],-2]
+
+                        if(nrow(mov_ramos_sub)==0)
+                            {
+                                next
+                            }
+
+                        numCol_ramos <- ceiling((ncol(mov_ramos_sub)-1)/3)
+
+                        if(!params_2[[7]][1])
+                            {
+                                mov_ramos_sub <- mov_ramos_sub[1:
+                                            (nrow(mov_ramos_sub)-1),]
+                            }
+
+                        cia <- as.character(cias[cias$Coenti==coenti_2[j],2])
+                        cia <- stri_trans_general(cia,"Latin-ASCII")
+
+                        writeData(workbook,
+                                  "resseg_ramos",
+                                  cia,
+                                  startRow=insert_line_ramos)
+
+                        insert_line_ramos <- insert_line_ramos+1
+
+                    #Transpose Data Frame
+                        mov_ramos_sub_t <- mov_ramos_sub[,-1]
+                        rownames(mov_ramos_sub_t) <- mov_ramos_sub[,1]
+                        mov_ramos_sub_t <- as.data.frame(t(mov_ramos_sub_t))
+
+                        writeDataTable(workbook,
+                                       "resseg_ramos",
+                                       format(
+                                        mov_ramos_sub_t,
+                                        decimal.mark=","),
+                                       rowNames=TRUE,
+                                       startRow=insert_line_ramos
+                                       )
+
+                        insert_line_ramos <- insert_line_ramos + 
+                                                nrow(mov_ramos_sub_t)+1
+
+                        writeData(workbook,
+                                  "resseg_ramos",
+                                  paste0("Ver tabela ",tabela_ramos),
+                                  startRow=insert_line_ramos)
+
+                        insert_line_ramos <- insert_line_ramos+2
+
+                    #Plotting data
+                        period <- c("Mensal",
+                                           "Trimestral",
+                                           "Semestral",
+                                           "Anual")[params_2[[7]]]
+
+                        plot_data_ramos <- melt(mov_ramos_sub,id="yearsec")
+
+                        #Plot Indexes
+                        x_index_ramos <- rep(F,nrow(mov_ramos_sub))
+                        x_length_ramos <- length(x_index_ramos)
+
+                        if(ceiling(x_length_ramos/3)!=x_length_ramos/3)
+                            {
+                                first_third_ramos <- ceiling(x_length_ramos/3)
+                                second_third_ramos <- floor(x_length_ramos*2/3)+1
+                            }
+                        else
+                            {
+                                first_third_ramos <- (x_length_ramos/3)+1
+                                second_third_ramos <- x_length_ramos*2/3
+                            }
+        
+                        x_index_ramos[c(1,
+                                first_third_ramos,
+                                second_third_ramos,
+                                length(x_index_ramos))
+                                ]<-T
+
+                        p1_ramos <- ggplot(data=plot_data_ramos,
+                                     aes(x=yearsec,
+                                         y=value,
+                                         colour=variable,
+                                         group=variable))+
+                                        geom_line()+
+                                        scale_x_discrete(
+                                            breaks=plot_data_ramos$yearsec[
+                                                                x_index_ramos])+
+                                        facet_wrap(~variable, 
+                                                   scales="free_y",
+                                                   ncol=3)+
+                                        ggtitle(paste0(
+                                            "Tabela ",
+                                            tabela_ramos,
+                                            ": ",
+                                            cia,
+                                            " \nPeriodicidade ",
+                                            period,
+                                            " \nDe ",
+                                            mov_ramos_sub[1,1],
+                                            " a ",
+                                            mov_ramos_sub[nrow(mov_ramos_sub),1])
+                                        )+
+                                        ylab("Valor")+
+                                        xlab("Periodo")
+                        if(nrow(mov_ramos_sub)<15)
+                            {
+                                p1_ramos <- p1_ramos + geom_point()
+                            }
+
+                        ggsave(paste0("resseg_ramos_",tabela_ramos,".jpeg"),
+                               plot=p1_ramos,
+                               path=paste0("proc_data",slash,"plots"),
+                               width=28,
+                               height=5*numCol_ramos,
+                               units="cm"
                                )
+
+                        plots_ramos[[tabela_ramos]]<- p1_ramos
+
+                        tabela_ramos <- tabela_ramos + 1
+
+                    }
+
+            #Merging plots and printing
+                plot_total_ramos <- arrangeGrob(grobs=plots_ramos,ncol=1)
+                ggsave("resseg_ramos_total.jpeg",
+                       plot=plot_total_ramos,
+                       path=paste0("proc_data",slash,"plots"),
+                       width=28,
+                       height=5*numCol_ramos*length(plots_ramos),
+                       limitsize=FALSE,
+                       units="cm"
+                       )
+
+                insertImage(workbook,
+                            "resseg_ramos",
+                            paste0("proc_data",
+                                   slash,
+                                   "plots",
+                                   slash,
+                                   "resseg_ramos_total.jpeg"
+                                   ),
+                            width=28,
+                            height=5*numCol_ramos*length(plots_ramos),
+                            units="cm",
+                            startRow=insert_line_ramos
+                            )
             }
 
 
