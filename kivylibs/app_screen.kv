@@ -1031,7 +1031,7 @@
                 size_hint:1,.1
                 BoxLayout:
                     orientation: "vertical"
-                    size_hint: 1,.09
+                    size_hint: 1,.062
                     Label:
                         text: "Demonstracoes Contabeis"
                         size_hint: 1,.05
@@ -1046,7 +1046,7 @@
                         Rectangle:
                             pos:self.pos
                             size:self.size
-                    size_hint: 1,.7
+                    size_hint: 1,.124
                     do_scroll_x: False
                     effect_cls:ScrollEffect
                     id: text_scroll
@@ -1064,6 +1064,142 @@
                             foreground_color:(1,1,1,1)
                             selection_color:(1,1,1,.5)
                             id:text_input_3
+                GridLayout:
+                    cols:2
+                    size_hint:1,.05
+                    Label:
+                        size_hint:1,.15
+                        text:"Data Inicial"
+                    Label:
+                        size_hint:1,.15
+                        text:"Data Final"
+                    TextInput:
+                        size_hint:1,.15
+                        text: ""
+                        hint_text: "DD/MM/YYYY"
+                        multiline: False
+                        id:date_3_1
+                    TextInput:
+                        size_hint:1,.15
+                        text: ""
+                        hint_text: "DD/MM/YYYY"
+                        multiline: False
+                        id:date_3_2
+                BoxLayout:
+                    orientation:"vertical"
+                    size_hint:1,.05
+                    Label:
+                        text:"Empresas"
+                        size_hint:1,.1
+                    BoxLayout:
+                        orientation:"horizontal"
+                        size_hint:1,.15
+                        spacing:10
+                        CheckBox:
+                            size_hint:.05,1
+                            on_active:root._entbox_3_callback(self.active)
+                            id:check_ent_3
+                        Label:
+                            size_hint:.15,1
+                            text:"Todas"
+                        TextInput:
+                            size_hint:.8,1
+                            text:""
+                            hint_text:"Codigos das Empresas"
+                            multiline: False
+                            disabled:root.ids.check_ent_3.active
+                            id:text_ent_3
+                BoxLayout:
+                    orientation:"vertical"
+                    size_hint:1,.05
+                    Label:
+                        text:"Ramos"
+                        size_hint:1,.1
+                    BoxLayout:
+                        orientation:"horizontal"
+                        size_hint:1,.15
+                        spacing:10
+                        CheckBox:
+                            size_hint:.05,1
+                            on_active:root._rambox_3_callback(self.active)
+                            id:check_ram_3
+                        Label:
+                            size_hint:.15,1
+                            text:"Todos"
+                        TextInput:
+                            size_hint:.8,1
+                            text:""
+                            hint_text:"Codigos dos Ramos"
+                            multiline: False
+                            disabled:root.ids.check_ram_3.active
+                            id:text_ram_3
+                BoxLayout:
+                    orientation:"vertical"
+                    size_hint:1,.05
+                    Label:
+                        text:"Grupos"
+                        size_hint:1,.1
+                    BoxLayout:
+                        orientation:"horizontal"
+                        size_hint:1,.15
+                        spacing:10
+                        CheckBox:
+                            size_hint:.05,1
+                            on_active:root._groupbox_3_callback(self.active)
+                            id:check_grup_3
+                        Label:
+                            size_hint:.15,1
+                            text:"Todos"
+                        TextInput:
+                            size_hint:.8,1
+                            text:""
+                            hint_text:"Codigos dos Grupos"
+                            multiline: False
+                            disabled:root.ids.check_grup_3.active
+                            id:text_grup_3
+                Label:
+                    text:"Periodicidade"
+                    size_hint:1,.01
+                GridLayout:
+                    cols:4
+                    size_hint:1,.1
+                    spacing:10,10
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_3_1
+                        group:"check_time_3"
+                        on_active:root._deltatime_3_callback(0)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Mensal"
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_3_2
+                        group:"check_time_3"
+                        on_active:root._deltatime_3_callback(1)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Trimestral"
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_3_3
+                        group:"check_time_3"
+                        on_active:root._deltatime_3_callback(2)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Semestral"
+                    CheckBox:
+                        size_hint:.05,1
+                        id:check_time_3_4
+                        group:"check_time_3"
+                        on_active:root._deltatime_3_callback(3)
+                        allow_no_selection: False
+                    Label:
+                        size_hint:0.45,1
+                        text:"Anual"
         BoxLayout:
             orientation:"horizontal"
             size_hint: 1,.1

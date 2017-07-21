@@ -95,6 +95,8 @@ def resource_path(relative_path):
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
+        if(not isdir(base_path+slash+"rlibs")):
+            makedirs(base_path+slash+"rlibs")
     return os.path.join(base_path,relative_path)
 
 logo_path = resource_path("logo"+slash+"logo.png")
@@ -134,6 +136,11 @@ deltatime_2=[True,False,False,False]
 #3rd Analysis startup
 
 analysis_3_check = [True]
+dates_3=["01/01/2017","01/02/2017"]
+ent_3=[True,""]
+ram_3=[True,""]
+grup_3=[True,""]
+deltatime_3=[True,False,False,False]
 text_input_3 = ""
 
 #Loading saved configurations
@@ -208,10 +215,33 @@ if(Path(config_path).is_file()):
 
     #3rd Analysis Config Read
         analysis_3_check_string = configs[16][1:len(configs[16])-1]
+        dates_3_string = configs[17][1:len(configs[17])-1].split(", ")
+        ent_3_string = configs[18][1:len(configs[18])-1].split(", ")
+        ram_3_string = configs[19][1:len(configs[19])-1].split(", ")
+        grup_3_string = configs[20][1:len(configs[20])-1].split(", ")
+        deltatime_3_string = configs[21][1:len(configs[21])-1].split(", ")
+
+        dates_3[0]=dates_3_string[0][1:len(dates_3_string[0])-1]
+        dates_3[1]=dates_3_string[1][1:len(dates_3_string[1])-1]
+
+        ent_3[0]=(ent_3_string[0]=="True")
+        ent_3[1]=ent_3_string[1][1:len(ent_3_string[1])-1]
+
+        ram_3[0]=(ram_3_string[0]=="True")
+        ram_3[1]=ram_3_string[1][1:len(ram_3_string[1])-1]
+
+        grup_3[0]=(grup_3_string[0]=="True")
+        grup_3[1]=grup_3_string[1][1:len(grup_3_string[1])-1]
+
+        i=0
+        for x in deltatime_3_string:
+            deltatime_3[i] = (x == "True")
+            i+=1
+
         analysis_3_check[0]=(analysis_3_check_string == "True")
         text_input_3_array = ""
-        for i in range(17,len(configs)):
-            if i>17:
+        for i in range(22,len(configs)):
+            if i>22:
                 text_input_3_array += "\n"
             text_input_3_array += configs[i]
         text_input_3 = text_input_3_array
@@ -237,6 +267,11 @@ else:
 
         f.write("Config Analysis 3\n")
         f.write(str(analysis_3_check)+"\n")
+        f.write(str(dates_3)+"\n")
+        f.write(str(ent_3)+"\n")
+        f.write(str(ram_3)+"\n")
+        f.write(str(grup_3)+"\n")
+        f.write(str(deltatime_3)+"\n")
         f.write(str(text_input_3))
 
 #1st Analysis temp values
@@ -258,6 +293,11 @@ new_deltatime_2=deltatime_2[:]
 
 #3rd Analysis temp values
 new_analysis_3_check = analysis_3_check[:]
+new_dates_3=dates_3[:]
+new_ent_3 = ent_3[:]
+new_ram_3 = ram_3[:]
+new_grup_3 = grup_3[:]
+new_deltatime_3=deltatime_3[:]
 new_text_input_3 = text_input_3[:]
 
 #Building GUI
@@ -424,6 +464,16 @@ class AppScreen(GridLayout):
 
         global analysis_3_check
         global new_analysis_3_check
+        global dates_3
+        global new_dates_3
+        global ent_3
+        global new_ent_3
+        global ram_3
+        global new_ram_3
+        global grup_3
+        global new_grup_3
+        global deltatime_3
+        global new_deltatime_3
         global text_input_3
         global new_text_input_3
 
@@ -449,6 +499,11 @@ class AppScreen(GridLayout):
         #Initiating Analysis 3 values
 
         new_analysis_3_check = analysis_3_check[:]
+        new_dates_3=dates_3[:]
+        new_ent_3 = ent_3[:]
+        new_ram_3 = ram_3[:]
+        new_grup_3 = grup_3[:]
+        new_deltatime_3=deltatime_3[:]
         new_text_input_3 = text_input_3[:]
 
         #Setting Popup Values
@@ -484,6 +539,18 @@ class AppScreen(GridLayout):
         popup.ids.check_time_2_4.active=new_deltatime_2[3]
 
         popup.ids.check_analysis_3.active=new_analysis_3_check[0]
+        popup.ids.date_3_1.text=new_dates_3[0]
+        popup.ids.date_3_2.text=new_dates_3[1]
+        popup.ids.check_ent_3.active=new_ent_3[0]
+        popup.ids.text_ent_3.text=new_ent_3[1]
+        popup.ids.check_ram_3.active=new_ram_3[0]
+        popup.ids.text_ram_3.text=new_ram_3[1]
+        popup.ids.check_grup_3.active=new_grup_3[0]
+        popup.ids.text_grup_3.text=new_grup_3[1]
+        popup.ids.check_time_3_1.active=new_deltatime_3[0]
+        popup.ids.check_time_3_2.active=new_deltatime_3[1]
+        popup.ids.check_time_3_3.active=new_deltatime_3[2]
+        popup.ids.check_time_3_4.active=new_deltatime_3[3]
         popup.ids.text_input_3.text = new_text_input_3
 
         popup.open()
@@ -625,7 +692,51 @@ class CheckPopup(XPopup):
         global new_analysis_3_check
         new_analysis_3_check[0] = value
 
-#Saving fields do data
+    #Analysis Company field
+
+    def _entbox_3_callback(self,value):
+        global new_ent_3
+        new_ent_3[0]=value
+
+    #Analysis Field field
+
+    def _rambox_3_callback(self,value):
+        global new_ram_3
+        new_ram_3[0]=value
+
+    #Analysis Group field
+
+    def _groupbox_3_callback(self,value):
+        global new_grup_3
+        new_grup_3[0]=value
+
+
+    #Analysis time interval field
+
+    def _deltatime_3_callback(self,n):
+        global deltatime_3
+        if n==0:
+            new_deltatime_3[0]=True
+            new_deltatime_3[1]=False
+            new_deltatime_3[2]=False
+            new_deltatime_3[3]=False
+        elif n==1:
+            new_deltatime_3[0]=False
+            new_deltatime_3[1]=True
+            new_deltatime_3[2]=False
+            new_deltatime_3[3]=False
+        elif n==2:
+            new_deltatime_3[0]=False
+            new_deltatime_3[1]=False
+            new_deltatime_3[2]=True
+            new_deltatime_3[3]=False
+        elif n==3:
+            new_deltatime_3[0]=False
+            new_deltatime_3[1]=False
+            new_deltatime_3[2]=False
+            new_deltatime_3[3]=True
+
+#Saving fields to data
 
     def _check_popup_callback(self,value):
         global analysis_check
@@ -658,6 +769,16 @@ class CheckPopup(XPopup):
 
         global analysis_3_check
         global new_analysis_3_check
+        global dates_3
+        global new_dates_3
+        global ent_3
+        global new_ent_3
+        global ram_3
+        global new_ram_3
+        global grup_3
+        global new_grup_3
+        global deltatime_3
+        global new_deltatime_3
         global text_input_3
         global new_text_input_3
 
@@ -693,7 +814,17 @@ class CheckPopup(XPopup):
 
             #Analysis 3 save
 
+            new_dates_3[0] = self.ids.date_3_1.text
+            new_dates_3[1] = self.ids.date_3_2.text
+            new_ent_3[1] = self.ids.text_ent_3.text
+            new_ram_3[1] = self.ids.text_ram_3.text
+            new_grup_3[1] = self.ids.text_grup_3.text
             analysis_3_check = new_analysis_3_check[:]
+            dates_3 = new_dates_3[:]
+            ent_3 = new_ent_3[:]
+            ram_3 = new_ram_3[:]
+            grup_3 = new_grup_3[:]
+            deltatime_3 = new_deltatime_3[:]
             text_input_3 = unidecode(self.ids.text_input_3.text)
             self.ids.text_input_3.text = text_input_3
             lines_to_write = text_input_3.split("\n")
@@ -721,12 +852,17 @@ class CheckPopup(XPopup):
 
                 #Analysis 3
                 filelines[16]=str(analysis_3_check)+"\n"
+                filelines[17]=str(dates_3)+"\n"
+                filelines[18]=str(ent_3)+"\n"
+                filelines[19]=str(ram_3)+"\n"
+                filelines[20]=str(grup_3)+"\n"
+                filelines[21]=str(deltatime_3)+"\n"
                 for i in range(0,len(lines_to_write)):
-                    if 17+i<=len(filelines)-1:
-                        filelines[17+i]=lines_to_write[i]+"\n"
+                    if 22+i<=len(filelines)-1:
+                        filelines[22+i]=lines_to_write[i]+"\n"
                     else:
                         filelines.append(lines_to_write[i]+"\n")
-                filelines = filelines[0:len(lines_to_write)+17]
+                filelines = filelines[0:len(lines_to_write)+22]
 
 
                 f.writelines(filelines)
@@ -751,6 +887,11 @@ class CheckPopup(XPopup):
 
             #Analysis 3 dismiss
             new_analysis_3_check = analysis_3_check[:]
+            new_dates_3=dates_3[:]
+            new_ent_3 = ent_3[:]
+            new_ram_3 = ram_3[:]
+            new_grup_3 = grup_3[:]
+            new_deltatime_3=deltatime_3[:]
             new_text_input_3 = text_input_3[:]
 
             self.dismiss()
