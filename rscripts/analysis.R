@@ -1569,13 +1569,23 @@ if(params_3[[1]]==TRUE)
 
         campos <- read.csv2(paste0("data",slash,"Ses_campos.csv"),encoding="latin1",strip.white=TRUE)
         campos$noitem <- sapply(campos$noitem, function(x) stri_trans_general(x,"Latin-ASCII"))
+        campos$noitem <- sapply(campos$noitem, function(x) stri_trim(x))
+        campos$noitem <- sapply(campos$noitem, function(x) stri_trans_tolower(x))
+        campos$noitem <- sapply(campos$noitem, function(x) gsub("^\\(.*?\\) ","",x))
 
     #Getting filtered cmpids
-        campos_filter <- campos[campos$noitem %in% params_3[[7]], 1]
+        params_campos <- params_3[[7]]
+        params_campos <- stri_trans_general(params_campos,"Latin-ASCII")
+        params_campos <- stri_trim(params_campos)
+        params_campos <- stri_trans_tolower(params_campos)
+        params_campos <- gsub("^\\(.*?\\) ","",params_campos)
+        params_campos <- unique(params_campos)
+        campos_filter <- campos[campos$noitem %in% params_campos, 1]
 
     #Filtering data
 
         mov_grupos <- read.csv2(paste0("data",slash,"ses_valoresresmovgrupos.csv"))
+        mov_grupos <- mov_grupos[,-6]
         mov_ramos <- read.csv2(paste0("data",slash,"SES_ValoresMovRamos.csv"))
 
         mov_grupos <- mov_grupos[mov_grupos$CMPID %in% campos_filter, ]
@@ -1924,51 +1934,58 @@ if(params_3[[1]]==TRUE)
 
     #Post-Processing
 
-        grupos <- read.csv2(paste0("data",slash,"ses_gruposramos.csv"),
-                            encoding="latin1")
-        grupos <- grupos[order(grupos[,3]),]
+        mov_grupos_campos <- stri_trans_general(
+                                stri_trim(
+                                merge(
+                                    campos,
+                                    mov_grupos,
+                                    by.y="CMPID",
+                                    by.x="nuitem")[,2]
+                                ),"Latin-ASCII")
 
+        mov_grupos[,3] <- mov_grupos_campos
         mov_grupos <- aggregate(mov_grupos[,5],
                                 by=list(
                                      yearsec=mov_grupos$YEARSEC,
                                      coenti=mov_grupos$COENTI,
-                                     gracodigo=mov_grupos$GRACODIGO
+                                     #gracodigo=mov_grupos$GRACODIGO
+                                     cmpid=mov_grupos$CMPID
                                      )
                              ,FUN=sum,na.rm=TRUE)
         mov_grupos_melt <- mov_grupos
         mov_grupos <- dcast(data=mov_grupos,
-                              formula= yearsec + coenti ~ gracodigo,
+                              formula= yearsec + coenti ~ cmpid,
                               fun.aggregate=sum,
                               value.var="x")
-        mov_grupos_names <- colnames(mov_grupos)[3:ncol(mov_grupos)]
-        grupos_sel <- stri_trans_general(as.character(
-                         grupos[grupos$GRACODIGO %in% mov_grupos_names,2]),
-                        "Latin-ASCII")
-        grupos_sel <- unlist(strsplit(grupos_sel,"- "))
-        grupos_sel <- grupos_sel[c(2*(1:(length(grupos_sel)/2)))]
-        colnames(mov_grupos) <- c(colnames(mov_grupos)[1:2],grupos_sel)
+        #mov_grupos_names <- colnames(mov_grupos)[3:ncol(mov_grupos)]
+        #colnames(mov_grupos) <- c(colnames(mov_grupos)[1:2],mov_grupos_names)
         write.csv2(mov_grupos,paste0("proc_data",slash,"dem_cont_grupos.csv"))
+
+        mov_ramos_campos <- stri_trans_general(
+                                stri_trim(
+                                merge(
+                                    campos,
+                                    mov_ramos,
+                                    by.y="cmpid",
+                                    by.x="nuitem")[,2]
+                                ),"Latin-ASCII")
+
+        mov_ramos[,3] <- mov_ramos_campos
 
         mov_ramos <- aggregate(mov_ramos[,6],
                                 by=list(
                                      yearsec=mov_ramos$yearsec,
                                      coenti=mov_ramos$coenti,
                                      #ramcodigo=mov_ramos$ramcodigo,
-                                     gracodigo=mov_ramos$gracodigo
+                                     #gracodigo=mov_ramos$gracodigo
+                                     cmpid=mov_ramos$cmpid
                                      )
                              ,FUN=sum,na.rm=TRUE)
         mov_ramos_melt <- mov_ramos
         mov_ramos <- dcast(data=mov_ramos,
-                              formula= yearsec + coenti ~ gracodigo,
+                              formula= yearsec + coenti ~ cmpid,
                               fun.aggregate=sum,
                               value.var="x")
-        mov_ramos_names <- colnames(mov_ramos)[3:ncol(mov_ramos)]
-        ramos_sel <- stri_trans_general(as.character(
-                         grupos[grupos$GRACODIGO %in% mov_ramos_names,2]),
-                        "Latin-ASCII")
-        ramos_sel <- unlist(strsplit(ramos_sel,"- "))
-        ramos_sel <- ramos_sel[c(2*(1:(length(ramos_sel)/2)))]
-        colnames(mov_ramos) <- c(colnames(mov_ramos)[1:2],ramos_sel)
         write.csv2(mov_ramos,paste0("proc_data",slash,"dem_cont_ramos.csv"))
 
         addWorksheet(workbook,"dem_cont_grupos")
