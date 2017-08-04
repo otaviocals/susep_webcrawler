@@ -79,7 +79,7 @@
                 size_hint:1,.1
                 BoxLayout:
                     orientation: "vertical"
-                    size_hint: 1,.052
+                    size_hint: 1,.062
                     Label:
                         text: "Premios e Sinistros de Seguradoras"
                         size_hint: 1,.05
@@ -94,7 +94,7 @@
                         Rectangle:
                             pos:self.pos
                             size:self.size
-                    size_hint: 1,.1
+                    size_hint: 1,.124
                     do_scroll_x: False
                     effect_cls:ScrollEffect
                     GridLayout:
@@ -541,6 +541,8 @@
                             multiline: False
                             disabled:root.ids.check_ram_1.active
                             id:text_ram_1
+                BoxLayout:
+                    size_hint:1,.05
                 Label:
                     text:"Periodicidade"
                     size_hint:1,.01
@@ -1049,21 +1051,82 @@
                     size_hint: 1,.124
                     do_scroll_x: False
                     effect_cls:ScrollEffect
-                    id: text_scroll
                     GridLayout:
                         cols:1
                         size_hint:1,None
+                        padding:0,5
+                        spacing:20
                         id:scroll_grid_3
                         minimum_height:self.height
                         top: self.height
-                        TextInput:
+                        Label:
+                            text:"Demonstracoes Contabeis"
+                            size_hint: 1,None
+                            height:18
+                            valign:"center"
+                            halign:"left"
+                            texture_size: self.size
+                            text_size: self.size
+                            shorten:True
+                            shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
                             size_hint:1,None
-                            height: max(self.minimum_height,text_scroll.height)
-                            background_color: (.1,.1,.1,1)
-                            cursor_color: (1,1,1,1)
-                            foreground_color:(1,1,1,1)
-                            selection_color:(1,1,1,.5)
-                            id:text_input_3
+                            top:self.height
+                            height:self.minimum_height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_3_callback(0,self.active)
+                                id:check3_0
+                            Label:
+                                text:"Ativo"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_3_callback(1,self.active)
+                                id:check3_1
+                            Label:
+                                text:"Passivo"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint:1,2
+                            top:self.height
+                            CheckBox:
+                                size_hint: .2,None
+                                height:18
+                                on_active:root._checkbox_3_callback(2,self.active)
+                                id:check3_2
+                            Label:
+                                text:"DRE"
+                                size_hint: .8,None
+                                height:18
+                                valign:"center"
+                                halign:"left"
+                                texture_size: self.size
+                                text_size: self.size
+                                shorten:True
+                                shorten_from:"right"
                 GridLayout:
                     cols:2
                     size_hint:1,.05
@@ -1110,53 +1173,7 @@
                             disabled:root.ids.check_ent_3.active
                             id:text_ent_3
                 BoxLayout:
-                    orientation:"vertical"
-                    size_hint:1,.05
-                    Label:
-                        text:"Ramos"
-                        size_hint:1,.1
-                    BoxLayout:
-                        orientation:"horizontal"
-                        size_hint:1,.15
-                        spacing:10
-                        CheckBox:
-                            size_hint:.05,1
-                            on_active:root._rambox_3_callback(self.active)
-                            id:check_ram_3
-                        Label:
-                            size_hint:.15,1
-                            text:"Todos"
-                        TextInput:
-                            size_hint:.8,1
-                            text:""
-                            hint_text:"Codigos dos Ramos"
-                            multiline: False
-                            disabled:root.ids.check_ram_3.active
-                            id:text_ram_3
-                BoxLayout:
-                    orientation:"vertical"
-                    size_hint:1,.05
-                    Label:
-                        text:"Grupos"
-                        size_hint:1,.1
-                    BoxLayout:
-                        orientation:"horizontal"
-                        size_hint:1,.15
-                        spacing:10
-                        CheckBox:
-                            size_hint:.05,1
-                            on_active:root._groupbox_3_callback(self.active)
-                            id:check_grup_3
-                        Label:
-                            size_hint:.15,1
-                            text:"Todos"
-                        TextInput:
-                            size_hint:.8,1
-                            text:""
-                            hint_text:"Codigos dos Grupos"
-                            multiline: False
-                            disabled:root.ids.check_grup_3.active
-                            id:text_grup_3
+                    size_hint:1,0.11
                 Label:
                     text:"Periodicidade"
                     size_hint:1,.01
