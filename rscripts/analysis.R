@@ -1786,7 +1786,7 @@ if(params_3[[1]]==TRUE)
 
                 balanco_list[[i]] <- balanco_list[[i]][
                         order(balanco_list[[i]]$yearsec,balanco_list[[i]]$cmpid),]
-                balanco_list[[i]] <- balanco_list[[i]][,c(2,6,3,5)]
+                balanco_list[[i]] <- balanco_list[[i]][,c(1,2,6,3,5)]
 
             #Processing Data
 
@@ -1814,25 +1814,33 @@ if(params_3[[1]]==TRUE)
 
                     print_line <- print_line+1
 
-                    balanco_list[[i]] <- aggregate(balanco_list[[i]][,4],by=list(
+                    balanco_list[[i]] <- aggregate(balanco_list[[i]][,5],by=list(
                                             yearsec=balanco_list[[i]]$yearsec,
-                                            noitem=balanco_list[[i]]$noitem),
+                                            cmpid=balanco_list[[i]]$cmpid),
                                                    FUN=sum,na.rm=TRUE)
 
                     colnames(balanco_list[[i]])[3] <- "valor"
 
                     balanco_list_curr <- dcast(data=balanco_list[[i]],
-                              formula= yearsec ~ noitem,
+                              formula= yearsec ~ cmpid,
                               fun.aggregate=sum,
                               value.var="valor")
 
                     balanco_list_curr_t <- balanco_list_curr[,-1]
-                    rownames(balanco_list_curr_t) <- balanco_list_curr[,1]
+
+                    new_col_names <- balanco_list_curr[,1]
+
+                    new_row_names <- campos_list[[i]][
+                                        campos_list[[i]]$cmpid %in% colnames(
+                                        balanco_list_curr_t),2]
                     balanco_list_curr_t <- as.data.frame(t(balanco_list_curr_t))
+                    colnames(balanco_list_curr_t) <- new_col_names
+                    balanco_list_curr_t <- cbind(new_row_names,balanco_list_curr_t)
+                    colnames(balanco_list_curr_t)[1] <- "Campos"
 
                     writeDataTable(workbook,paste0(contab_name,"_contabeis"),
                                        format(balanco_list_curr_t,decimal.mark=","),
-                                       rowNames=TRUE,startRow=print_line)
+                                       startRow=print_line)
                 }
                 else
                 {
@@ -1861,27 +1869,38 @@ if(params_3[[1]]==TRUE)
                                     next
                                 }
 
-                            balanco_total <- aggregate(balanco_total[,4],
+                            balanco_total <- aggregate(balanco_total[,5],
                                                     by=list(
                                                     yearsec=balanco_total$yearsec,
-                                                    noitem=balanco_total$noitem),
+                                                    cmpid=balanco_total$cmpid),
                                                            FUN=sum,na.rm=TRUE)
 
                             colnames(balanco_total)[3] <- "valor"
 
                             balanco_list_curr <- dcast(data=balanco_total,
-                                      formula= yearsec ~ noitem,
+                                      formula= yearsec ~ cmpid,
                                       fun.aggregate=sum,
                                       value.var="valor")
 
                             balanco_list_curr_t <- balanco_list_curr[,-1]
-                            rownames(balanco_list_curr_t) <- balanco_list_curr[,1]
+
+                            new_col_names <- balanco_list_curr[,1]
+
+                            new_row_names <- campos_list[[i]][
+                                        campos_list[[i]]$cmpid %in% colnames(
+                                        balanco_list_curr_t),2]
+
                             balanco_list_curr_t <- as.data.frame(
                                                     t(balanco_list_curr_t))
 
+                            colnames(balanco_list_curr_t) <- new_col_names
+                            balanco_list_curr_t <- cbind(new_row_names,
+                                                         balanco_list_curr_t)
+                            colnames(balanco_list_curr_t)[1] <- "Campos"
+
                             writeDataTable(workbook,paste0(contab_name,"_contabeis"),
                                         format(balanco_list_curr_t,decimal.mark=","),
-                                        rowNames=TRUE,startRow=print_line)
+                                        startRow=print_line)
 
                             print_line <- print_line+nrow(balanco_list_curr_t)+2
 
