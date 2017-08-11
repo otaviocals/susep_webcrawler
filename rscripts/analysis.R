@@ -1569,6 +1569,38 @@ if(params_3[[1]]==TRUE)
         campos$noitem <- sapply(campos$noitem, function(x) stri_trans_general(x,"Latin-ASCII"))
         campos$noitem <- sapply(campos$noitem, function(x) stri_trim(x))
 
+    #Getting campos order
+
+        #ativos <- read.csv2("ativos.csv",header=FALSE,encoding="latin1",strip.white=TRUE)
+        #ativos <- sapply(ativos[,1],function(x) stri_trans_general(x,"Latin-ASCII"))
+        #ativos <- make.unique(ativos,sep="_")
+        #ativos <- data.frame(noitem=ativos)
+        #campos_ativos <- campos[campos$nuquad=="22A",1:2]
+        #campos_ativos$noitem <- make.unique(campos_ativos$noitem,sep="_")
+        #ativos_order <- merge(ativos,campos_ativos,by="noitem",sort=FALSE)
+        ##print(ativos_order$noitem)
+        ##print(as.numeric(strsplit(,split=", ")[[1]]))
+
+        #passivos <- read.csv2("passivos.csv",header=FALSE,encoding="latin1",strip.white=TRUE)
+        #passivos <- sapply(passivos[,1],function(x) stri_trans_general(x,"Latin-ASCII"))
+        #passivos <- make.unique(passivos,sep="_")
+        #passivos <- data.frame(noitem=passivos)
+        #campos_passivos <- campos[campos$nuquad=="22P",1:2]
+        #campos_passivos$noitem <- make.unique(campos_passivos$noitem,sep="_")
+        #passivos_order <- merge(passivos,campos_passivos,by="noitem",sort=FALSE)
+        ##print(passivos_order$noitem)
+        ##print(toString(passivos_order[,2]))
+
+        #dre <- read.csv2("dre.csv",header=FALSE,encoding="latin1",strip.white=TRUE)
+        #dre <- sapply(dre[,1],function(x) stri_trans_general(x,"Latin-ASCII"))
+        #dre <- make.unique(dre,sep="_")
+        #dre <- data.frame(noitem=dre)
+        #campos_dre <- campos[campos$nuquad=="23",1:2]
+        #campos_dre$noitem <- make.unique(campos_dre$noitem,sep="_")
+        #dre_order <- merge(dre,campos_dre,by="noitem",sort=FALSE)
+        #print(dre_order$noitem)
+        #print(toString(dre_order[,2]))
+
     #Loading SES_Balanco.csv
 
         balanco <- read.csv2(paste0(
@@ -1730,6 +1762,7 @@ if(params_3[[1]]==TRUE)
             {
 				if(nrow(balanco) > 0)
 					{
+
 						balanco<-aggregate(balanco[,5],
 										by=list(
 												yearsec=paste0(
@@ -1758,6 +1791,8 @@ if(params_3[[1]]==TRUE)
 												),FUN=sum,na.rm=TRUE)
 
 						colnames(balanco)[5]<-"valor"
+                        #print(head(balanco))
+                        #balanco <- balanco[,-4]
 					}
 
             }
@@ -1782,7 +1817,7 @@ if(params_3[[1]]==TRUE)
                 balanco_list[[i]] <- balanco_list[[i]][
                                 balanco_list[[i]]$cmpid %in% campos_list[[i]]$cmpid,]
                 balanco_list[[i]] <- merge(
-                                    balanco_list[[i]],campos_list[[i]],by="cmpid")
+                                    balanco_list[[i]],campos_list[[i]],by="cmpid",sort=FALSE)
 
                 balanco_list[[i]] <- balanco_list[[i]][
                         order(balanco_list[[i]]$yearsec,balanco_list[[i]]$cmpid),]
@@ -1793,16 +1828,38 @@ if(params_3[[1]]==TRUE)
                 if(filtros_sel[i]=="22A")
                 {
                     contab_name="ativos"
+                    string_cmpid = "1479, 356, 1484, 11136, 1480, 6152, 1496, 5497, 11137, 345, 11273, 3162, 363, 1488, 11285, 11286, 11287, 1487, 11290, 7155, 11292, 359, 7154, 3165, 3166, 5498, 3172, 11138, 6155, 6156, 11139, 11142, 13124, 11300, 11301, 11302, 11144, 7223, 12515, 11146, 11147, 12516, 11284, 13125, 11140, 1491, 1489, 6789, 343, 6787, 6158, 6450, 11151, 11348, 336, 7225, 11141, 11153, 11154, 11155, 362, 5586, 5587, 361, 11149, 3170, 3171, 11152, 5503, 11158, 11159, 11160, 11982, 11983, 11984, 340, 11303, 11988, 11989, 353, 11307, 5917, 331, 332, 6165, 1038, 5500, 11164, 358, 11156, 3175, 3188, 3190, 7143, 7233, 7237, 3189, 7146, 13123, 3163, 11157, 3179, 3180, 5501, 3181, 11165, 3168, 6168, 11166, 11169, 13129, 11304, 11305, 11306, 11171, 7235, 12517, 11173, 11174, 12518, 11289, 13130, 11167, 1036, 1035, 6791, 11150, 6788, 6170, 6451, 11177, 11349, 350, 13128, 11168, 11179, 11180, 11181, 3192, 3193, 11178, 3185, 3186, 11183, 351, 11185, 11186, 11187, 11992, 11993, 11994, 11985, 1485, 11998, 11999, 11990, 11986, 323, 6452, 6453, 6454, 6455, 6466, 6467, 11192, 11193, 327, 11191, 11194, 11308, 11195, 11309, 11310, 1503, 1507, 1499, 6474, 5591, 11196, 11197, 5594, 7149, 5920, 7152, 7153, 11184, 1502, 7266, 1498, 5124, 5714, 5126, 5127, 11198, 5716, 5717, 5129"
+                    #lista_campos=list(
+                    ##CIRCULANTE
+                    #    1479,
+                    ##DISPONIVEL
+                    #    356,1484,11136,1480,1493,1496,5497,11137,358,11138,
+                    ##CREDITOS DAS OPERACOES COM SEGUROS E RESSEGUROS
+                    #    3162,363,1488,7143,7155,7225,1487,7146,7233,7237,3163,11139,
+                    ##CREDITOS DAS OPERACOES COM PREVIDENCIA COMPLEMENTAR
+                    #    3165,3166,5498,3172,11140,
+                    ##CREDITOS DAS OPERACOES DE CAPITALIZACAO
+                    #    6155,6156,11141,
+                    ##ATIVOS DE RESSEGURO E RETROCESSAO - PROVISOES TECNICAS
+                    #    11142,13124,11300,11301,11302,11144,11145,12515,11146,11147,12516,11284,13125,11149,
+                    ##TITULOS E CREDITOS A RECEBER
+                    #    1036,1035,6789,11250,6787,6158,6450,11151,11348,350,360,11152,11153,11154,11155,
+                    ##OUTROS VALORES E BENS
+                    #    362)
                 }
                 else if(filtros_sel[i]=="22P")
                 {
                     contab_name="passivos"
+                    string_cmpid <- "1040, 3277, 5511, 3207, 5894, 1547, 5895, 5509, 6073, 3213, 3214, 3215, 5896, 5515, 6088, 3219, 5510, 5514, 6090, 11311, 6074, 6091, 11312, 11313, 1550, 3224, 11199, 3226, 11201, 11202, 11203, 3227, 3228, 11205, 11206, 11207, 11208, 6100, 3251, 3252, 3259, 11226, 3268, 11227, 11228, 11229, 11230, 5660, 5720, 7092, 5662, 5908, 3205, 6087, 5909, 3209, 5512, 3212, 3283, 3284, 5910, 1551, 3218, 5513, 6089, 3286, 3222, 3223, 3291, 11209, 11210, 11220, 11221, 6125, 3306, 3307, 3312, 11213, 3319, 11214, 11215, 11216, 11217, 6142, 5907, 7093, 6145, 1555, 6148, 3403, 1563, 1565, 6149, 6150, 7265, 1561, 5517, 6151, 1554, 3343, 3337, 3345, 6285, 3347, 5118, 5718, 5120, 5121, 11274, 5719, 6143, 5721, 5123"
                 }
                 else if(filtros_sel[i]=="23")
                 {
                     contab_name="dre"
+                    string_cmpid <- "6183, 7138, 11342, 6185, 6188, 11981, 6189, 6187, 6190, 7220, 7200, 7218, 7201, 7219, 7139, 7075, 12695, 12675, 7081, 12676, 12677, 4027, 11232, 7215, 7216, 6196, 11233, 11234, 11235, 11236, 11314, 6582, 6583, 7195, 12678, 12679, 7221, 7196, 6246, 7198, 11237, 11316, 11317, 11318, 11319, 11320, 11257, 11238, 11239, 11240, 11251, 11241, 11242, 12680, 12681, 11244, 11245, 11323, 11324, 11247, 13191, 7183, 7184, 6486, 6487, 7185, 6488, 6489, 7186, 6238, 6256, 6259, 6462, 7189, 12682, 11248, 7192, 7193, 7217, 5722, 11249, 11325, 11326, 11327, 11328, 11250, 11321, 11252, 11253, 11254, 11255, 6202, 4059, 6309, 6310, 11329, 11330, 4062, 12683, 12684, 12685, 11332, 11333, 11256, 11334, 11335, 11336, 11337, 6261, 11338, 11339, 6312, 6313, 4069, 6591, 6592, 6593, 6317, 6595, 6596, 6597, 6321, 4070, 6571, 6598, 6599, 4074, 6325, 6326, 6327, 6328, 7262, 7263, 6573, 11258, 4079, 4081, 4080, 4083, 518, 535, 517"
                 }
 
+                cmpid_order <- data.frame(cmpid=as.numeric(strsplit(string_cmpid,split=", ")[[1]]))
+                #print(cmpid_order)
                 print_line <- 1
 
                 addWorksheet(workbook,paste0(contab_name,"_contabeis"))
@@ -1821,25 +1878,26 @@ if(params_3[[1]]==TRUE)
 
                     colnames(balanco_list[[i]])[3] <- "valor"
 
-                    balanco_list_curr <- dcast(data=balanco_list[[i]],
-                              formula= yearsec ~ cmpid,
+
+                    balanco_list_curr_ex <- dcast(data=balanco_list[[i]],
+                              formula= cmpid ~ yearsec,
                               fun.aggregate=sum,
                               value.var="valor")
 
-                    balanco_list_curr_t <- balanco_list_curr[,-1]
+                    balanco_list_curr_ex <- merge(cmpid_order,balanco_list_curr_ex,
+                                               by="cmpid",sort=FALSE)
 
-                    new_col_names <- balanco_list_curr[,1]
 
-                    new_row_names <- campos_list[[i]][
-                                        campos_list[[i]]$cmpid %in% colnames(
-                                        balanco_list_curr_t),2]
-                    balanco_list_curr_t <- as.data.frame(t(balanco_list_curr_t))
-                    colnames(balanco_list_curr_t) <- new_col_names
-                    balanco_list_curr_t <- cbind(new_row_names,balanco_list_curr_t)
-                    colnames(balanco_list_curr_t)[1] <- "Campos"
+                    new_row_names_ex <- campos[
+                            match(balanco_list_curr_ex[,1], campos$nuitem),2]
+                    colnames(balanco_list_curr_ex)[1] <- "Campos"
+
+                    balanco_list_curr_ex[,1] <- new_row_names_ex
+                    #print(head(balanco_list_curr_ex))
+
 
                     writeDataTable(workbook,paste0(contab_name,"_contabeis"),
-                                       format(balanco_list_curr_t,decimal.mark=","),
+                                       format(balanco_list_curr_ex,decimal.mark=","),
                                        startRow=print_line)
                 }
                 else
@@ -1876,33 +1934,47 @@ if(params_3[[1]]==TRUE)
                                                            FUN=sum,na.rm=TRUE)
 
                             colnames(balanco_total)[3] <- "valor"
-
-                            balanco_list_curr <- dcast(data=balanco_total,
-                                      formula= yearsec ~ cmpid,
+#
+                            balanco_list_curr_ex <- dcast(data=balanco_list[[i]],
+                                      formula= cmpid ~ yearsec,
                                       fun.aggregate=sum,
                                       value.var="valor")
 
-                            balanco_list_curr_t <- balanco_list_curr[,-1]
+                            balanco_list_curr_ex <- merge(cmpid_order,
+                                balanco_list_curr_ex,by="cmpid",sort=FALSE)
 
-                            new_col_names <- balanco_list_curr[,1]
 
-                            new_row_names <- campos_list[[i]][
-                                        campos_list[[i]]$cmpid %in% colnames(
-                                        balanco_list_curr_t),2]
+                            new_row_names_ex <- campos[
+                                    match(balanco_list_curr_ex[,1], campos$nuitem),2]
+                            colnames(balanco_list_curr_ex)[1] <- "Campos"
 
-                            balanco_list_curr_t <- as.data.frame(
-                                                    t(balanco_list_curr_t))
+                            balanco_list_curr_ex[,1] <- new_row_names_ex
+                            #balanco_list_curr <- dcast(data=balanco_total,
+                            #          formula= yearsec ~ cmpid,
+                            #          fun.aggregate=sum,
+                            #          value.var="valor")
 
-                            colnames(balanco_list_curr_t) <- new_col_names
-                            balanco_list_curr_t <- cbind(new_row_names,
-                                                         balanco_list_curr_t)
-                            colnames(balanco_list_curr_t)[1] <- "Campos"
+                            #balanco_list_curr_t <- balanco_list_curr[,-1]
+
+                            #new_col_names <- balanco_list_curr[,1]
+
+                            #new_row_names <- campos_list[[i]][
+                            #            campos_list[[i]]$cmpid %in% colnames(
+                            #            balanco_list_curr_t),2]
+
+                            #balanco_list_curr_t <- as.data.frame(
+                            #                        t(balanco_list_curr_t))
+
+                            #colnames(balanco_list_curr_t) <- new_col_names
+                            #balanco_list_curr_t <- cbind(new_row_names,
+                            #                             balanco_list_curr_t)
+                            #colnames(balanco_list_curr_t)[1] <- "Campos"
 
                             writeDataTable(workbook,paste0(contab_name,"_contabeis"),
-                                        format(balanco_list_curr_t,decimal.mark=","),
+                                        format(balanco_list_curr_ex,decimal.mark=","),
                                         startRow=print_line)
 
-                            print_line <- print_line+nrow(balanco_list_curr_t)+2
+                            print_line <- print_line+nrow(balanco_list_curr_ex)+2
 
                         }
                 }
