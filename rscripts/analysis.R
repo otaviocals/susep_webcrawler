@@ -961,51 +961,69 @@ if(params_2[[1]]==TRUE)
 
     #Post-Processing
 
+        mov_grupos <- mov_grupos[,-4]
+        mov_ramos <- mov_ramos[,c(-4,-5,-7,-8)]
+
+        colnames(mov_grupos) <- tolower(colnames(mov_grupos))
+
+        mov_grupos <- rbind(mov_grupos,mov_ramos)
+
+        rep_cmpids <- rep(seq_along(lista_cmpid),sapply(lista_cmpid,length))
+        mov_grupos[,3] <- rep_cmpids[
+                                match(mov_grupos[,3],unlist(lista_cmpid))]
+
+        print(head(mov_grupos))
+        print(head(mov_ramos))
+
         grupos <- read.csv2(paste0("data",slash,"ses_gruposramos.csv"),
                             encoding="latin1")
         grupos <- grupos[order(grupos[,3]),]
 
-        mov_grupos <- aggregate(mov_grupos[,5],
+        mov_grupos <- aggregate(mov_grupos[,4],
                                 by=list(
-                                     yearsec=mov_grupos$YEARSEC,
-                                     coenti=mov_grupos$COENTI,
-                                     gracodigo=mov_grupos$GRACODIGO
+                                     yearsec=mov_grupos$yearsec,
+                                     coenti=mov_grupos$coenti,
+                                     cmpid=mov_grupos$cmpid
                                      )
                              ,FUN=sum,na.rm=TRUE)
         mov_grupos_melt <- mov_grupos
         mov_grupos <- dcast(data=mov_grupos,
-                              formula= yearsec + coenti ~ gracodigo,
+                              formula= yearsec + coenti ~ cmpid,
                               fun.aggregate=sum,
                               value.var="x")
         mov_grupos_names <- colnames(mov_grupos)[3:ncol(mov_grupos)]
-        grupos_sel <- stri_trans_general(as.character(
-                         grupos[grupos$GRACODIGO %in% mov_grupos_names,2]),
-                        "Latin-ASCII")
-        grupos_sel <- unlist(strsplit(grupos_sel,"- "))
-        grupos_sel <- grupos_sel[c(2*(1:(length(grupos_sel)/2)))]
-        colnames(mov_grupos) <- c(colnames(mov_grupos)[1:2],grupos_sel)
+        #grupos_sel <- stri_trans_general(as.character(
+        #                 grupos[grupos$GRACODIGO %in% mov_grupos_names,2]),
+        #                "Latin-ASCII")
+        topic_sel <- lista_labels[
+                        as.numeric(colnames(mov_grupos)[3:ncol(mov_grupos)])]
+        print(head(mov_grupos))
+        #grupos_sel <- unlist(strsplit(grupos_sel,"- "))
+        #grupos_sel <- grupos_sel[c(2*(1:(length(grupos_sel)/2)))]
+        colnames(mov_grupos) <- c(colnames(mov_grupos)[1:2],topic_sel)
         write.csv2(mov_grupos,paste0("proc_data",slash,"resseg_grupos.csv"))
 
-        mov_ramos <- aggregate(mov_ramos[,6],
+        mov_ramos <- aggregate(mov_ramos[,4],
                                 by=list(
                                      yearsec=mov_ramos$yearsec,
                                      coenti=mov_ramos$coenti,
                                      #ramcodigo=mov_ramos$ramcodigo,
-                                     gracodigo=mov_ramos$gracodigo
+                                     cmpid=mov_ramos$cmpid
                                      )
                              ,FUN=sum,na.rm=TRUE)
         mov_ramos_melt <- mov_ramos
         mov_ramos <- dcast(data=mov_ramos,
-                              formula= yearsec + coenti ~ gracodigo,
+                              formula= yearsec + coenti ~ cmpid,
                               fun.aggregate=sum,
                               value.var="x")
         mov_ramos_names <- colnames(mov_ramos)[3:ncol(mov_ramos)]
-        ramos_sel <- stri_trans_general(as.character(
-                         grupos[grupos$GRACODIGO %in% mov_ramos_names,2]),
-                        "Latin-ASCII")
-        ramos_sel <- unlist(strsplit(ramos_sel,"- "))
-        ramos_sel <- ramos_sel[c(2*(1:(length(ramos_sel)/2)))]
-        colnames(mov_ramos) <- c(colnames(mov_ramos)[1:2],ramos_sel)
+        #ramos_sel <- stri_trans_general(as.character(
+        #                 grupos[grupos$GRACODIGO %in% mov_ramos_names,2]),
+        #                "Latin-ASCII")
+        print(head(mov_ramos))
+        #ramos_sel <- unlist(strsplit(ramos_sel,"- "))
+        #ramos_sel <- ramos_sel[c(2*(1:(length(ramos_sel)/2)))]
+        #colnames(mov_ramos) <- c(colnames(mov_ramos)[1:2],ramos_sel)
         write.csv2(mov_ramos,paste0("proc_data",slash,"resseg_ramos.csv"))
 
         addWorksheet(workbook,"resseg_grupos")
