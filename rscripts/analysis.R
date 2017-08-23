@@ -592,9 +592,35 @@ if(params_1[[1]]==TRUE)
 
 if(params_2[[1]]==TRUE)
     {
-        lista_cmpid <- list(c(12032,6475,6807), c(11278,11275), c(6808,6476), c(6809,12028,12078,12340,12349,12364,6477,12204,12210,12246,12251), c(6810,6478), c(6844,7202,7139), c(7231,6816,7147,6481,6811,1613), c(6817,6470,6812,1612,4034), c(6818,6582,6813,4035), c(6819,6583,6814,4036), c(11247,11271,5988,6001,6014,6026,12689,12223,12261,1779), c(6198,6252,6820,6815,3235), c(11267,11322,7267))
+        lista_cmpid <- list(
+                            c(12032,6475,6807), 
+                            c(11278,11275), 
+                            c(6808,6476), 
+                            c(6809,12028,12078,12340,12349,12364,6477,12204,12210,12246,12251), 
+                            c(6810,6478), 
+                            c(6844,7202,7139, 12079), 
+                            c(7231,6816,7147,6481,6811,1613, 12242, 12181, 12269, 12270, 12271, 12232, 13111, 12351, 12375, 12376, 12379), 
+                            c(6817,6470,6812,1612,4034, 12273, 12235, 12025, 12194, 12195, 12202, 12203, 12239, 12240, 12241), 
+                            c(6818,6582,6813,4035), 
+                            c(6819,6583,6814,4036), 
+                            c(11247,11271,5988,6001,6014,6026,12689,12223,12261,1779, 12689, 12261, 12207, 12248, 12223), 
+                            c(6198,6252,6820,6815,3235), 
+                            c(11267,11322,7267))
 
-        lista_labels <- list(c("Premios_de_Resseguro"), c("Premios_de_Resseguro_RVNE"), c("Operacoes_com_Exterior"), c("Retrocessoes_Aceitas"), c("Premios_Cedidos_de_Retrocessao"), c("Variacoes_das_Provisoes_Tecnicas_de_Premios"), c("Sinistros"), c("Recuperacao_de_Sinistros"), c("Salvados"), c("Ressarcimentos"), c("Salvados_e_Ressarcimentos"), c("Variacoes_das_Provisoes_de_Sinistros_Ocorridos_mas_nao_Avisados"), c("Variacoes_das_Provisoes_IBNER"))
+        lista_labels <- list(
+                             c("Premios_de_Resseguro"), 
+                             c("Premios_de_Resseguro_RVNE"), 
+                             c("Operacoes_com_Exterior"), 
+                             c("Retrocessoes_Aceitas"), 
+                             c("Premios_Cedidos_de_Retrocessao"), 
+                             c("Variacoes_das_Provisoes_Tecnicas_de_Premios"), 
+                             c("Sinistros"), 
+                             c("Recuperacao_de_Sinistros"), 
+                             c("Salvados"), 
+                             c("Ressarcimentos"), 
+                             c("Salvados_e_Ressarcimentos"),  
+             c("Variacoes_das_Provisoes_de_Sinistros_Ocorridos_mas_nao_Avisados"), 
+                             c("Variacoes_das_Provisoes_IBNER"))
 
         cmpid_filter <- c()
         labels_filter <- c()
@@ -609,6 +635,7 @@ if(params_2[[1]]==TRUE)
                     }
             }
         filter_table <- data.frame(cmpid=cmpid_filter,label=labels_filter)
+        #print(filter_table)
 
         mov_grupos <- read.csv2(paste0("data",slash,"ses_valoresresmovgrupos.csv"))
         mov_ramos <- read.csv2(paste0("data",slash,"SES_ValoresMovRamos.csv"))
